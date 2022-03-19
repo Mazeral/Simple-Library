@@ -1,27 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from '../entities/book.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BookDTO } from './dto/book.dto';
 
 @Injectable()
 export class BookService {
   constructor(
     @InjectRepository(Book)
     private bookRepo: Repository<Book>,
-  ) {}
+  ) { }
 
   create(createBookDto: CreateBookDto) {
-    try {
-      if (this.findOne(createBookDto.title)) {
-        return 'This book does already exist';
-      } else {
-        return this.bookRepo.create(createBookDto);
-      }
-    } catch (error) {
-      return error.message;
-    }
+    return this.bookRepo.create(createBookDto);
   }
 
   async findAll() {
@@ -32,23 +24,30 @@ export class BookService {
     }
   }
 
-  async findOne(title: string) {
+  async findOne(id: number) {
     try {
-      return await this.bookRepo.findOne({ where: { title: title } });
+      return await this.bookRepo.findOne({ where: { id: id } });
     } catch (error) {
       return error.message;
     }
   }
 
-  async update(id: number, updateBookDto: UpdateBookDto) {
-    try {
-      return await this.bookRepo.update(id, updateBookDto);
-    } catch (error) {
-      return error.message;
-    }
+  //How to create an update function:
+  //1:decalre 2 parameters, the id and the body
+  //2:await the update function
+  //3:return entity by using a find function
+  async update(id: number, book: BookDTO): Promise<BookDTO> {
+    this.bookRepo.update({ id }, book)
+    return this.findOne(id)
   }
 
-  remove(id: number) {
-    return this.bookRepo.delete(id);
+
+  async remove(id: number) {
+    try {
+      await this.bookRepo.delete({ id });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 }

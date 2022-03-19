@@ -14,7 +14,7 @@ export class Book {
   title: string;
 
   @Column()
-  discription: string;
+  description: string;
 
-  
+
 }
