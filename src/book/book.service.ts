@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from '../entities/book.entity';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookDTO } from './dto/book.dto';
 
@@ -50,4 +50,5 @@ export class BookService {
       return { deleted: false, message: err.message };
     }
   }
+
 }

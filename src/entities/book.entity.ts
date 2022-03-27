@@ -16,5 +16,14 @@ export class Book {
   @Column()
   description: string;
 
+  //In order to create an object using the book entity I need to define constructors.
 
+  constructor(title: string, description: string);
+  constructor(title: string, description?: string);
+  constructor(title?: string, description?: string) {
+    this.title = title || '';
+    this.description = description || '';
+  }
 }
+
+
