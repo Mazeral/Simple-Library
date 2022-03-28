@@ -22,4 +22,12 @@ export class Author {
   @ManyToMany(() => Book)
   @JoinTable()
   Books: Book[];
+  //In order to create an object using the book entity I need to define constructors.
+  constructor(FirstName: string, LastName: string, Books: Book[]);
+  constructor(FirstName: string, LastName: string, Books: Book[], id?: number) {
+    this.FirstName = FirstName || '';
+    this.LastName = LastName || '';
+    this.Books = Books || [];
+    this.id = id || null;
+  }
 }

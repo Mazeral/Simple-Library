@@ -9,8 +9,8 @@ import { BookModule } from './book/book.module';
 import { AuthorModule } from './author/author.module';
 @Module({
   imports: [
-      ServeStaticModule.forRoot({
-    rootPath: join(__dirname, '..', '../client/dist'),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '../client/dist'),
     }),
     TypeOrmModule.forRoot(),
     BookModule,

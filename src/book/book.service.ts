@@ -10,7 +10,7 @@ export class BookService {
   constructor(
     @InjectRepository(Book)
     private bookRepo: Repository<Book>,
-  ) { }
+  ) {}
 
   create(createBookDto: CreateBookDto) {
     return this.bookRepo.create(createBookDto);
@@ -37,10 +37,9 @@ export class BookService {
   //2:await the update function
   //3:return entity by using a find function
   async update(id: number, book: BookDTO): Promise<BookDTO> {
-    this.bookRepo.update({ id }, book)
-    return this.findOne(id)
+    this.bookRepo.update({ id }, book);
+    return this.findOne(id);
   }
-
 
   async remove(id: number) {
     try {
@@ -50,5 +49,4 @@ export class BookService {
       return { deleted: false, message: err.message };
     }
   }
-
 }

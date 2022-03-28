@@ -13,7 +13,7 @@ import { BookDTO } from './dto/book.dto';
 import { CreateBookDto } from './dto/create-book.dto';
 @Controller('book')
 export class BookController {
-  constructor(private readonly bookService: BookService) { }
+  constructor(private readonly bookService: BookService) {}
   @Version('0')
   @Post()
   create(@Body() createBookDto: CreateBookDto) {
@@ -32,10 +32,12 @@ export class BookController {
 
   @Version('0')
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBook: BookDTO): Promise<BookDTO> {
-    return this.bookService.update(+id, updateBook)
+  update(
+    @Param('id') id: string,
+    @Body() updateBook: BookDTO,
+  ): Promise<BookDTO> {
+    return this.bookService.update(+id, updateBook);
   }
-
 
   @Version('0')
   @Delete(':id')

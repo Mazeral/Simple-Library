@@ -18,39 +18,52 @@ describe('BookController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BookController],
       //using custom providers for using a the controller with it's injected dependencies
-      providers: [{
-        provide: BookService, //moking the services of the BookService file.
-        useValue: {
-          create: jest.fn(dto => {
-            return {
-              id: Math.random(),
-              ...dto
-            }
-          }),
-          findAll: jest.fn(() => {
-            return [
-              {
-                id: 1, "title": "sometitle1", "desciprtion": "somedescription1"
-              },
-              {
-                id: 2, "title": "sometitle2", "desciprtion": "somedescription2"
-              },
-              {
-                id: 3, "title": "sometitle3", "desciprtion": "somedescription3"
-              }]
-          }),
-          findOne: jest.fn((id: string) => {
-            return {
-              id: id,
-              title: "a title",
-              description: "a description"
-            }
-          }),
-          remove: jest.fn().mockResolvedValue({ deleted: true }),
-          update: jest.fn().mockImplementation((id, book: BookDTO) => Promise.resolve({ ...book })),//This can be shortend
-          //using the mockResolvedValue
-        }
-      }],
+      providers: [
+        {
+          provide: BookService, //moking the services of the BookService file.
+          useValue: {
+            create: jest.fn((dto) => {
+              return {
+                id: Math.random(),
+                ...dto,
+              };
+            }),
+            findAll: jest.fn(() => {
+              return [
+                {
+                  id: 1,
+                  title: 'sometitle1',
+                  desciprtion: 'somedescription1',
+                },
+                {
+                  id: 2,
+                  title: 'sometitle2',
+                  desciprtion: 'somedescription2',
+                },
+                {
+                  id: 3,
+                  title: 'sometitle3',
+                  desciprtion: 'somedescription3',
+                },
+              ];
+            }),
+            findOne: jest.fn((id: string) => {
+              return {
+                id: id,
+                title: 'a title',
+                description: 'a description',
+              };
+            }),
+            remove: jest.fn().mockResolvedValue({ deleted: true }),
+            update: jest
+              .fn()
+              .mockImplementation((id, book: BookDTO) =>
+                Promise.resolve({ ...book }),
+              ), //This can be shortend
+            //using the mockResolvedValue
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<BookController>(BookController);
@@ -61,30 +74,44 @@ describe('BookController', () => {
   });
 
   it('should create an entity', () => {
-    expect(controller.create({ title: 'some title', description: 'some description' })).toEqual({ id: expect.any(Number), title: 'some title', description: 'some description' })
+    expect(
+      controller.create({
+        title: 'some title',
+        description: 'some description',
+      }),
+    ).toEqual({
+      id: expect.any(Number),
+      title: 'some title',
+      description: 'some description',
+    });
   });
   it('should return an array of object', () => {
     expect(controller.findAll()).toEqual([
       {
-        id: 1, "title": "sometitle1", "desciprtion": "somedescription1"
+        id: 1,
+        title: 'sometitle1',
+        desciprtion: 'somedescription1',
       },
       {
-        id: 2, "title": "sometitle2", "desciprtion": "somedescription2"
+        id: 2,
+        title: 'sometitle2',
+        desciprtion: 'somedescription2',
       },
       {
-        id: 3, "title": "sometitle3", "desciprtion": "somedescription3"
-      }])
-  })
+        id: 3,
+        title: 'sometitle3',
+        desciprtion: 'somedescription3',
+      },
+    ]);
+  });
 
   it('should return a book', () => {
-    expect(controller.findOne('5')).toEqual(
-      {
-        id: 5,
-        title: "a title",
-        description: "a description",
-      }
-    )
-  })
+    expect(controller.findOne('5')).toEqual({
+      id: 5,
+      title: 'a title',
+      description: 'a description',
+    });
+  });
 
   describe('updateBook', () => {
     it('should update a book', async () => {
@@ -98,7 +125,4 @@ describe('BookController', () => {
       });
     });
   });
-
-
-
 });

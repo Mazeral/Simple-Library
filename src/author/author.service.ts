@@ -39,7 +39,12 @@ export class AuthorService {
     }
   }
 
-  remove(id: number) {
-    return this.authorRepo.delete(id);
+  async remove(id: number) {
+    try {
+      await this.authorRepo.delete({ id });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 }
