@@ -7,7 +7,4 @@
   </div>
 </template>
 
-<style>
-.card {
-}
-</style>
+<style></style>

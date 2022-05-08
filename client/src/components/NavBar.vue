@@ -5,11 +5,12 @@
     <div class="container">
       <ul class="navbar-nav">
         <li class="nav-item">
-      
           <form action="search">
-              <label for="searching" class="fw-bold text-white">What are you looking for?</label>
-              <input type="text" id="searching">
-              <button class="btn btn-dark">Go!</button>
+            <label for="searching" class="fw-bold text-white"
+              >What are you looking for?</label
+            >
+            <input type="text" id="search ing" />
+            <button class="btn btn-dark">Go!</button>
           </form>
         </li>
         <li class="nav-item">
@@ -23,8 +24,8 @@
           >
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link"
-            ><span class="fw-bold text-white">Create</span></a
+          <router-link to="/new"
+            ><span class="fw-bold text-white">Create</span></router-link
           >
         </li>
       </ul>
