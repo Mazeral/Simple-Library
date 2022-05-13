@@ -5,8 +5,9 @@ import NavBar from './components/NavBar.vue';
 
 <template>
   <NavBar />
-
-  <RouterView />
+  <div class="container">
+    <RouterView />
+  </div>
 
   <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
     <div class="container text-center">

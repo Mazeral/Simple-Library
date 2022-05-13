@@ -1,4 +1,6 @@
-<script> </script>
+<script>
+import { RouterLink } from 'vue-router';
+</script>
 
 <template>
   <nav class="nav navbar navbar-dark bg-primary">
@@ -14,17 +16,17 @@
           </form>
         </li>
         <li class="nav-item">
-          <router-link :to="{'books'}" class="nav-link"
+          <router-link :to="{ name: 'books' }" class="nav-link"
             ><span class="fw-bold text-white">Books</span></router-link
           >
         </li>
         <li class="nav-item">
-          <router-link :to="{'authors'}" class="nav-link"
+          <router-link :to="{ name: 'authors' }" class="nav-link"
             ><span class="fw-bold text-white">Authors</span></router-link
           >
         </li>
         <li class="nav-item">
-          <router-link :to="{'new'}"
+          <router-link :to="{ name: 'new' }"
             ><span class="fw-bold text-white">Create</span></router-link
           >
         </li>
