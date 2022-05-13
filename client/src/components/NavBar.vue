@@ -1,4 +1,4 @@
-<script></script>
+<script> </script>
 
 <template>
   <nav class="nav navbar navbar-dark bg-primary">
@@ -14,17 +14,17 @@
           </form>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link"
-            ><span class="fw-bold text-white">Books</span></a
+          <router-link :to="{'books'}" class="nav-link"
+            ><span class="fw-bold text-white">Books</span></router-link
           >
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link"
-            ><span class="fw-bold text-white">Authors</span></a
+          <router-link :to="{'authors'}" class="nav-link"
+            ><span class="fw-bold text-white">Authors</span></router-link
           >
         </li>
         <li class="nav-item">
-          <router-link to="/new"
+          <router-link :to="{'new'}"
             ><span class="fw-bold text-white">Create</span></router-link
           >
         </li>

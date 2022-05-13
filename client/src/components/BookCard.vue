@@ -2,7 +2,7 @@
 let books = null;
 fetch('http://localhost:3000/books')
   .then((res) => res.json())
-  .then((data) => (this.authors = data))
+  .then((data) => (this.books = data))
   .catch((err) => console.log(err));
 </script>
 
