@@ -13,7 +13,15 @@ export class BookService {
   ) {}
 
   create(createBookDto: CreateBookDto) {
-    return this.bookRepo.create(createBookDto);
+    try {
+      if (this.bookRepo.find(createBookDto))
+        throw Error('This book already exists');
+      else {
+        return this.bookRepo.create(createBookDto);
+      }
+    } catch (Error) {
+      console.log(Error.message);
+    }
   }
 
   async findAll() {

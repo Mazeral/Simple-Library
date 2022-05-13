@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Version,
 } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';

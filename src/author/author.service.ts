@@ -23,12 +23,20 @@ export class AuthorService {
     }
   }
 
-  findAll() {
-    return this.authorRepo.find();
+  async findAll() {
+    try {
+      return await this.authorRepo.find();
+    } catch (error) {
+      return error.message;
+    }
   }
 
-  findOne(title: string) {
-    return this.authorRepo.findOne({ where: { title: title } });
+  async findOne(title: string) {
+    try {
+      return await this.authorRepo.findOne({ where: { title: title } });
+    } catch (error) {
+      return error.message;
+    }
   }
 
   async update(id: number, updateAuthorDto: UpdateAuthorDto) {
