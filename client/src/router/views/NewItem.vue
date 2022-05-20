@@ -34,7 +34,9 @@ async function postBook(url = 'localhost:8080/book', data = newBook.value) {
     method: 'POST',
     body: JSON.stringify(data),
   });
-  console.log('a book post request has been sent')
+  data.description=''
+  data.title=''
+  console.log('a book post request has been sent');
   return response.json();
 }
 //post request for authors script:
@@ -46,36 +48,41 @@ async function postAuthor(
     method: 'POST',
     body: JSON.stringify(data),
   });
-  console.log('an author post request has been sent')
+  data.firstName=''
+  data.lastName=''
+  console.log('an author post request has been sent');
   return response.json();
 }
 </script>
 <template>
   <div class="container">
     <!--a nested form, the user will choose what he wants to create and then the form will appear depending on what he choosed, some scripted is needed. -->
-    <div>
-      <div class="form-check">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="book"
-          @click="bookForm"
-          v-model="isBook"
-        />
-        <label for="book" class="form-check-label">Create book</label>
+    <form action="">
+      <div>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="book"
+            @click="bookForm"
+            v-model="isBook"
+          />
+          <label for="book" class="form-check-label">Create book</label>
+        </div>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="author"
+            @click="authorForm"
+            v-model="isAuthor"
+          />
+          <label for="author" class="form-check-label">Create author</label>
+        </div>
       </div>
-      <div class="form-check">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="author"
-          @click="authorForm"
-          v-model="isAuthor"
-        />
-        <label for="author" class="form-check-label">Create author</label>
-      </div>
-    </div>
-    <form @submit.prevent="postAuthor">
+    </form>
+
+    <form @submit.prevent="postAuthor" method="post">
       <!-- The author entity contains : first name, last name, an array of books.
       The book entity contains : the title and the description. -->
       <div id="newAuthor" v-if="isAuthor">
@@ -84,7 +91,7 @@ async function postAuthor(
           type="text"
           class="form-control"
           id="firstname"
-          v-model="newAuthor.firstName"
+          v-model="newAuthor.FirstName"
           name="FirstName"
         />
         <label for="lastname" class="form-label">Last name</label>
@@ -92,16 +99,16 @@ async function postAuthor(
           type="text"
           class="form-control"
           id="lastname"
-          v-model="newAuthor.lastName"
+          v-model="newAuthor.LastName"
           name="LastName"
         />
         <!-- button for submitting -->
-        <button type="button" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">
           Create new author!
         </button>
       </div>
     </form>
-    <form @submit.prevent="postBook">
+    <form @submit.prevent="postBook" method="post">
       <div id="newBook" v-if="isBook">
         <label for="title" class="form-label">Title</label>
         <input
@@ -117,11 +124,11 @@ async function postAuthor(
           cols="30"
           rows="10"
           class="form-control"
-          v-model="newBook.desc"
+          v-model="newBook.description"
           name="desciption"
         ></textarea>
         <!-- button for submitting -->
-        <button type="button" class="btn btn-primary">Create new book!</button>
+        <button type="submit" class="btn btn-primary">Create new book!</button>
       </div>
     </form>
   </div>

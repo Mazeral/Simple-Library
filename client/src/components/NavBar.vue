@@ -26,8 +26,13 @@ import { RouterLink } from 'vue-router';
           >
         </li>
         <li class="nav-item">
-          <router-link :to="{ name: 'new' }"
+          <router-link :to="{ name: 'new' }" class="nav-link"
             ><span class="fw-bold text-white">Create</span></router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'update' }" class="nav-link"
+            ><span class="fw-bold text-white">Update</span></router-link
           >
         </li>
       </ul>
