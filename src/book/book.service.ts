@@ -3,7 +3,6 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from '../entities/book.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BookDTO } from './dto/book.dto';
 
 @Injectable()
 export class BookService {
@@ -32,26 +31,34 @@ export class BookService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(Title: string) {
     try {
-      return await this.bookRepo.findOne({ where: { id: id } });
+      return await this.bookRepo.findOne({ where: { title: Title } });
+    } catch (error) {
+      return error.message;
+    }
+  }
+  //Create multiple update services to make mutliple update endpoints, DIVIDE AND CONQUOER
+  async updateTitle(Title: string, newTitle: string) {
+    try {
+      return await this.bookRepo.update(Title, { title: newTitle });
     } catch (error) {
       return error.message;
     }
   }
 
-  //How to create an update function:
-  //1:decalre 2 parameters, the id and the body
-  //2:await the update function
-  //3:return entity by using a find function
-  async update(id: number, book: BookDTO): Promise<BookDTO> {
-    this.bookRepo.update({ id }, book);
-    return this.findOne(id);
+  async updateDesc(Title: string, newDesc: string) {
+    try {
+      return await this.bookRepo.update(Title, { description: newDesc });
+    } catch (error) {
+      return error.message;
+    }
   }
 
-  async remove(id: number) {
+  async remove(title: string) {
     try {
-      await this.bookRepo.delete({ id });
+      const book = await this.bookRepo.findOne(title);
+      this.bookRepo.remove(book);
       return { deleted: true };
     } catch (err) {
       return { deleted: false, message: err.message };

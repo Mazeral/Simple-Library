@@ -34,8 +34,8 @@ async function postBook(url = 'localhost:8080/book', data = newBook.value) {
     method: 'POST',
     body: JSON.stringify(data),
   });
-  data.description=''
-  data.title=''
+  data.description = '';
+  data.title = '';
   console.log('a book post request has been sent');
   return response.json();
 }
@@ -48,8 +48,8 @@ async function postAuthor(
     method: 'POST',
     body: JSON.stringify(data),
   });
-  data.firstName=''
-  data.lastName=''
+  data.firstName = '';
+  data.lastName = '';
   console.log('an author post request has been sent');
   return response.json();
 }

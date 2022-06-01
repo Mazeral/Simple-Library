@@ -10,6 +10,7 @@ export class Book {
 
   @Column()
   description: string;
+  //There should be an array of authors here...
 
   //In order to create an object using the book entity I need to define constructors.
 
