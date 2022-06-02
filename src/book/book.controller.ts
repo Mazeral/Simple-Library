@@ -6,11 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  Version,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { BookDTO } from './dto/book.dto';
 import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDesc } from './dto/update-book-desc.dto';
+import { UpdateBookTitle } from './dto/update-book-title.dto';
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
@@ -24,19 +25,24 @@ export class BookController {
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.bookService.findOne(+id);
+    return this.bookService.findOneID(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBook: BookDTO,
-  ): Promise<BookDTO> {
-    return this.bookService.update(+id, updateBook);
+  @Patch('title')
+  updateTitle(@Body() updateBookTitle: UpdateBookTitle): Promise<BookDTO> {
+    const title = updateBookTitle.title;
+    const newTitle = updateBookTitle.newTitle;
+    return this.bookService.updateTitle(title, newTitle);
+  }
+  @Patch('desc')
+  updateDesc(@Body() updateBookDesc: UpdateBookDesc): Promise<BookDTO> {
+    const title = updateBookDesc.title;
+    const newDesc = updateBookDesc.newDesc;
+    return this.bookService.updateTitle(title, newDesc);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookService.remove(+id);
+  @Delete(':title')
+  remove(@Param('title') title: string) {
+    return this.bookService.remove(title);
   }
 }

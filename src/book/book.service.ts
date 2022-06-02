@@ -38,6 +38,14 @@ export class BookService {
       return error.message;
     }
   }
+
+  async findOneID(wanted: number) {
+    try {
+      return await this.bookRepo.findOne({ where: { id: wanted } });
+    } catch (error) {
+      return error.message;
+    }
+  }
   //Create multiple update services to make mutliple update endpoints, DIVIDE AND CONQUOER
   async updateTitle(Title: string, newTitle: string) {
     try {
