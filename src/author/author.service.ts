@@ -42,6 +42,16 @@ export class AuthorService {
     }
   }
 
+  async findOneID(wanted: number) {
+    try {
+      return await this.authorRepo.findOne({
+        where: { id: wanted },
+      });
+    } catch (error) {
+      return error.message;
+    }
+  }
+
   //Create multiple update services to make mutliple update endpoints, DIVIDE AND CONQUOER
 
   async updateBooks({ firstName, lastName }, books: Book[]) {
