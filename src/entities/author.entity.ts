@@ -27,7 +27,7 @@ export class Author {
   constructor(FirstName: string, LastName: string, Books: Book[], id?: number) {
     this.FirstName = FirstName || '';
     this.LastName = LastName || '';
-    this.Books = Books || [];
+    this.Books = Books || null;
     this.id = id || null;
   }
 }

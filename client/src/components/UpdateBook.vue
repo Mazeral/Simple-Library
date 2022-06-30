@@ -6,3 +6,7 @@
  * 4-Update
  */
 </script>
+
+<template>
+  <h1>updating a book</h1>
+</template>

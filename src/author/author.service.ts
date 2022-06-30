@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { Author } from '../../src/entities/author.entity';
+import { Author } from 'src/entities/author.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from 'src/entities/book.entity';
+import { BookService } from 'src/book/book.service';
 @Injectable()
 export class AuthorService {
   constructor(
     @InjectRepository(Author)
     private authorRepo: Repository<Author>,
+    private readonly bookService: BookService,
   ) {}
 
   create(createAuthorDto: CreateAuthorDto) {
@@ -53,7 +55,7 @@ export class AuthorService {
 
   //Create multiple update services to make mutliple update endpoints, DIVIDE AND CONQUOER
 
-  async updateBooks({ firstName, lastName }, books: Book[]) {
+  async updateBooks({ firstName, lastName }, books: string[]) {
     //Search for an author that matches these options, if he does exist update him with the books
     //Array, if not return error.
     try {
@@ -63,8 +65,11 @@ export class AuthorService {
           LastName: lastName,
         },
       });
+      const bookArray: Book[] = await this.createArray(books);
+      //needs to be fixed: if a book title exists, add it.
+      //These update functions only add a title, not a book object.
       if (author) {
-        this.authorRepo.update(author.id, { Books: books });
+        this.authorRepo.update(author.id, { Books: bookArray });
       }
     } catch (error) {
       return error.message;
@@ -112,5 +117,16 @@ export class AuthorService {
     } catch (err) {
       return { deleted: false, message: err.message };
     }
+  }
+
+  //Creates an array of books
+  async createArray(booknames: string[]) {
+    const books: Book[] = [];
+    booknames.forEach(async (element) => {
+      if (this.bookService.findOne(element)) {
+        books.push(await this.bookService.findOne(element));
+      }
+    });
+    return books;
   }
 }

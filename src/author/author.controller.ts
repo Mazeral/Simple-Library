@@ -16,6 +16,7 @@ import { NewLastName } from './dto/new-lastName.dto';
 @Controller('author')
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
+  //creates an author
   @Post()
   create(@Body() createAuthorDto: CreateAuthorDto) {
     return this.authorService.create(createAuthorDto);
@@ -24,12 +25,14 @@ export class AuthorController {
   findAll() {
     return this.authorService.findAll();
   }
+  //finds an author by ID
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.authorService.findOneID(+id);
   }
   //Create update endpoints that work well witht the services.
-  //THE BELOW IS NOT GOOD, IT SHOULD EITHER BE DELETED OR EDITED.
+
+  //update the firstname of the author
   @Patch('firstname')
   updateFirstName(@Body() updateFirstName: NewFirstName) {
     //Gets the original first and last name, and then passes it in the update function
@@ -41,6 +44,7 @@ export class AuthorController {
     );
   }
 
+  //update the lastname of the author
   @Patch('lastname')
   updateLastName(@Body() updateLastName: NewLastName) {
     //Gets the original first and last name, and then passes it in the update function
@@ -52,6 +56,7 @@ export class AuthorController {
     );
   }
 
+  //updates the authors books
   @Patch('books')
   updateAuthorBooks(@Body() updateAuthorBooks: AuthorBooks) {
     const firstName = updateAuthorBooks.FirstName;
@@ -62,6 +67,7 @@ export class AuthorController {
     );
   }
 
+  //removes an author from the database.
   @Delete('deleteAuthor')
   remove(@Body() author: DeleteAuthor) {
     const firstName = author.FirstName;

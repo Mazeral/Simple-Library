@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
-import { Book } from '../entities/book.entity';
+import { Book } from 'src/entities/book.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -31,7 +31,7 @@ export class BookService {
     }
   }
 
-  async findOne(Title: string) {
+  async findOne(Title: string): Promise<Book> {
     try {
       return await this.bookRepo.findOne({ where: { title: Title } });
     } catch (error) {
@@ -39,7 +39,7 @@ export class BookService {
     }
   }
 
-  async findOneID(wanted: number) {
+  async findOneID(wanted: number): Promise<Book> {
     try {
       return await this.bookRepo.findOne({ where: { id: wanted } });
     } catch (error) {
