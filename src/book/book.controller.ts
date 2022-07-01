@@ -15,11 +15,11 @@ import { UpdateBookTitle } from './dto/update-book-title.dto';
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
-  @Post()
+  @Post('new')
   create(@Body() createBookDto: CreateBookDto) {
     return this.bookService.create(createBookDto);
   }
-  @Get()
+  @Get('/')
   findAll() {
     return this.bookService.findAll();
   }

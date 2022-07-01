@@ -54,11 +54,13 @@ const updateFirstNameData = ref(objectForFirstName);
 // The object containing the data for chaning the last name:
 const objectForLastname = {
   author: { FirstName: firstName.value, LastName: lastName.value },
-  LastName: lastName.value,
+  LastName: newLastName.value,
 };
 // The variable that contains the object:
-const updateLastName = ref(objectForLastname);
+const updateLastNameData = ref(objectForLastname);
 // fetch requests for the buttons!
+
+// Fetch for adding books
 async function updateBooksFetch(
   url = 'localhost:3000/author/books',
   Data1 = updateBooksData,
@@ -153,56 +155,110 @@ async function updateLastNameFetch(
     </form>
 
     <!-- A form to add books -->
-    <form v-if="booksForm">
+    <form v-if="booksForm" @submit.prevent="updateBooksFetch">
       <div>
         <label for="FirstName" class="form-label"
           >Enter the fist name of the author</label
         >
-        <input type="text" class="form-control" id="FirstName" required />
+        <input
+          type="text"
+          class="form-control"
+          id="FirstName"
+          v-model="firstName"
+          required
+        />
         <label for="LastName" class="form-label">Enter the last name</label>
-        <input type="text" id="LastName" class="form-control" required />
+        <input
+          type="text"
+          id="LastName"
+          class="form-control"
+          v-model="lastName"
+          required
+        />
         <label for="Book" class="form-label">Enter a book he wrote</label>
-        <input type="text" name="" id="Book" class="form-control" />
+        <input
+          type="text"
+          name=""
+          id="Book"
+          class="form-control"
+          v-model="books"
+        />
       </div>
       <button type="submit" class="btn btn-primary">
         Add a book to the author!
       </button>
     </form>
     <!-- A form to change the first name. -->
-    <form v-if="firstNameForm">
+    <form v-if="firstNameForm" @submit.prevent="updateFirstNameFetch">
       <div>
         <label for="OldFirstName" class="form-label"
           >Enter the authors original first name</label
         >
-        <input type="text" name="" id="OldFirstName" class="form-label" />
+        <input
+          type="text"
+          name=""
+          id="OldFirstName"
+          class="form-label"
+          v-model="firstName"
+        />
         <label for="LastName" class="form-label"
           >Enter the authors last name</label
         >
-        <input type="text" name="" id="LastName" class="form-control" />
+        <input
+          type="text"
+          name=""
+          id="LastName"
+          class="form-control"
+          v-model="lastName"
+        />
         <label for="NewFirstName" class="form-label"
           >Enter the new authors first name</label
         >
-        <input type="text" name="" id="NewFirstName" class="form-control" />
+        <input
+          type="text"
+          name=""
+          id="NewFirstName"
+          class="form-control"
+          v-model="newFirstName"
+        />
       </div>
       <button type="submit" class="btn btn-primary">
         Change the first name
       </button>
     </form>
     <!-- A form to change the last name. -->
-    <form v-if="lastNameForm">
+    <form v-if="lastNameForm" @submit.prevent="updateLastNameFetch">
       <div>
         <label for="FirstName" class="form-label"
           >Enter the authors first name</label
         >
-        <input type="text" name="" id="FristName" class="form-label" />
+        <input
+          type="text"
+          name=""
+          id="FirstName"
+          class="form-label"
+          v-model="firstName"
+        />
         <label for="OldLastName" class="form-label"
           >Enter the authors original last name</label
         >
-        <input type="text" name="" id="OldLastName" class="form-control" />
+        <input
+          type="text"
+          name=""
+          id="OldLastName"
+          class="form-control"
+          v-model="lastName"
+        />
         <label for="NewLastName" class="form-label"
           >Enter the new authors last name</label
         >
-        <input type="text" name="" id="NewLastName" class="form-control" />
+        <input
+          type="text"
+          name=""
+          id="NewLastName"
+          class="form-control"
+          v-model="newLastName"
+        />
       </div>
       <button type="submit" class="btn btn-primary">
         Change the last name

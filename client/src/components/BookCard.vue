@@ -1,9 +1,11 @@
 <script setup>
 let books = null;
-fetch('http://localhost:3000/books')
-  .then((res) => res.json())
-  .then((data) => (this.books = data))
-  .catch((err) => console.log(err));
+books = fetch('http://localhost:3000/books');
+// .then((res) => res.json())
+// .then((data) => (this.books = data))
+// .catch((err) => console.log(err));
+
+console.log(books);
 </script>
 
 <template>

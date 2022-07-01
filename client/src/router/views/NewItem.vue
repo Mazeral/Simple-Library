@@ -29,19 +29,23 @@ const bookForm = () => {
   isBook.value = !isBook.value;
 };
 //The post request for books script:
-async function postBook(url = 'localhost:8080/book', data = newBook.value) {
+async function postBook(url = 'localhost:3000/book/new', data = newBook.value) {
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
   });
+  console.log(
+    'a book post request has been sent',
+    data.title,
+    data.description,
+  );
   data.description = '';
   data.title = '';
-  console.log('a book post request has been sent');
   return response.json();
 }
 //post request for authors script:
 async function postAuthor(
-  url = 'localhost:8080/author',
+  url = 'localhost:3000/author',
   data = newAuthor.value,
 ) {
   const response = await fetch(url, {
@@ -108,7 +112,7 @@ async function postAuthor(
         </button>
       </div>
     </form>
-    <form @submit.prevent="postBook" method="post">
+    <form @submit.prevent="postBook">
       <div id="newBook" v-if="isBook">
         <label for="title" class="form-label">Title</label>
         <input
