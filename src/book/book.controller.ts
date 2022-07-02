@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { Book } from 'src/entities/book.entity';
+import { UpdateResult } from 'typeorm';
 import { BookService } from './book.service';
 import { BookDTO } from './dto/book.dto';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -16,29 +18,29 @@ import { UpdateBookTitle } from './dto/update-book-title.dto';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
   @Post('new')
-  create(@Body() createBookDto: CreateBookDto) {
+  create(@Body() createBookDto: CreateBookDto): Promise<Book> {
     return this.bookService.create(createBookDto);
   }
   @Get('/')
-  findAll() {
+  findAll(): Promise<Book[]> {
     return this.bookService.findAll();
   }
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Book> {
     return this.bookService.findOneID(+id);
   }
 
-  @Patch('title')
-  updateTitle(@Body() updateBookTitle: UpdateBookTitle): Promise<BookDTO> {
+  @Patch('changetitle')
+  updateTitle(@Body() updateBookTitle: UpdateBookTitle): Promise<UpdateResult> {
     const title = updateBookTitle.title;
     const newTitle = updateBookTitle.newTitle;
     return this.bookService.updateTitle(title, newTitle);
   }
   @Patch('desc')
-  updateDesc(@Body() updateBookDesc: UpdateBookDesc): Promise<BookDTO> {
+  updateDesc(@Body() updateBookDesc: UpdateBookDesc): Promise<UpdateResult> {
     const title = updateBookDesc.title;
     const newDesc = updateBookDesc.newDesc;
-    return this.bookService.updateTitle(title, newDesc);
+    return this.bookService.updateDesc(title, newDesc);
   }
 
   @Delete(':title')

@@ -1,9 +1,10 @@
 <script setup>
-let books = null;
-books = fetch('http://localhost:3000/api/books');
-// .then((res) => res.json())
-// .then((data) => (this.books = data))
-// .catch((err) => console.log(err));
+import { ref } from 'vue';
+let books = ref(null);
+books =  fetch('localhost:3000/api/book/')
+  .then((res) => res.json())
+  .then((data) => (books.value = data))
+  .catch((err) => console.log(err));
 
 console.log(books);
 </script>
@@ -13,6 +14,7 @@ console.log(books);
     <div class="card-header">{{ book.title }}</div>
     <div class="card-body">{{ book.description }}</div>
   </div>
+  <div>{{ books.value }}</div>
 </template>
 
 <style></style>

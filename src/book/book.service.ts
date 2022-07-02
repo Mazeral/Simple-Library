@@ -16,7 +16,7 @@ export class BookService {
       if (this.bookRepo.find(createBookDto))
         throw Error('This book already exists');
       else {
-        return this.bookRepo.save(this.bookRepo.create(createBookDto));
+        return await this.bookRepo.save(this.bookRepo.create(createBookDto));
       }
     } catch (Error) {
       console.log(Error.message);
@@ -45,15 +45,25 @@ export class BookService {
   //Create multiple update services to make mutliple update endpoints, DIVIDE AND CONQUOER
   async updateTitle(Title: string, newTitle: string) {
     try {
-      return await this.bookRepo.update(Title, { title: newTitle });
-    } catch (error) {
-      return error.message;
+      const book: Book = await this.bookRepo.findOne({
+        where: { title: Title },
+      });
+      if (book) {
+        return this.bookRepo.update(book.id, { title: newTitle });
+      } else throw Error(`This book doesn't exist!`);
+    } catch (Error) {
+      return Error.message;
     }
   }
 
   async updateDesc(Title: string, newDesc: string) {
     try {
-      return await this.bookRepo.update(Title, { description: newDesc });
+      const book: Book = await this.bookRepo.findOne({
+        where: { title: Title },
+      });
+      if (book) {
+        return this.bookRepo.update(book.id, { description: newDesc });
+      } else throw Error(`This book doesn't exist!`);
     } catch (error) {
       return error.message;
     }
