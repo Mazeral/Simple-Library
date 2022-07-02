@@ -11,24 +11,20 @@ export class BookService {
     private bookRepo: Repository<Book>,
   ) {}
 
-  create(createBookDto: CreateBookDto) {
+  async create(createBookDto: CreateBookDto) {
     try {
       if (this.bookRepo.find(createBookDto))
         throw Error('This book already exists');
       else {
-        return this.bookRepo.create(createBookDto);
+        return this.bookRepo.save(this.bookRepo.create(createBookDto));
       }
     } catch (Error) {
       console.log(Error.message);
     }
   }
 
-  async findAll() {
-    try {
-      return await this.bookRepo.find();
-    } catch (error) {
-      return error.message;
-    }
+  findAll() {
+    return this.bookRepo.find();
   }
 
   async findOne(Title: string): Promise<Book> {

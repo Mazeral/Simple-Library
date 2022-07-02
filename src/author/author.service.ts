@@ -18,7 +18,7 @@ export class AuthorService {
       if (this.authorRepo.find(createAuthorDto))
         return 'This author already exists';
       else {
-        return this.authorRepo.create(createAuthorDto);
+        return this.authorRepo.save(this.authorRepo.create(createAuthorDto));
       }
     } catch (error) {
       return error.message;

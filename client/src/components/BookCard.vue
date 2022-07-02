@@ -1,6 +1,6 @@
 <script setup>
 let books = null;
-books = fetch('http://localhost:3000/books');
+books = fetch('http://localhost:3000/api/books');
 // .then((res) => res.json())
 // .then((data) => (this.books = data))
 // .catch((err) => console.log(err));
