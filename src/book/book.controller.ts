@@ -10,7 +10,6 @@ import {
 import { Book } from 'src/entities/book.entity';
 import { UpdateResult } from 'typeorm';
 import { BookService } from './book.service';
-import { BookDTO } from './dto/book.dto';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDesc } from './dto/update-book-desc.dto';
 import { UpdateBookTitle } from './dto/update-book-title.dto';
@@ -43,8 +42,8 @@ export class BookController {
     return this.bookService.updateDesc(title, newDesc);
   }
 
-  @Delete(':title')
-  remove(@Param('title') title: string) {
-    return this.bookService.remove(title);
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.bookService.remove(+id);
   }
 }

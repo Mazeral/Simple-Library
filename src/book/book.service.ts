@@ -69,9 +69,9 @@ export class BookService {
     }
   }
 
-  async remove(title: string) {
+  async remove(id: number) {
     try {
-      const book = await this.bookRepo.findOne(title);
+      const book = await this.bookRepo.findOne({ where: { id: id } });
       this.bookRepo.remove(book);
       return { deleted: true };
     } catch (err) {

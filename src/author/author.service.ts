@@ -65,11 +65,11 @@ export class AuthorService {
           LastName: lastName,
         },
       });
-      const bookArray: Book[] = await this.createArray(books);
       //needs to be fixed: if a book title exists, add it.
       //These update functions only add a title, not a book object.
       // Has been fixed.
       if (author) {
+        const bookArray: Book[] = await this.createArray(books);
         this.authorRepo.update(author.id, { Books: bookArray });
       }
     } catch (error) {
