@@ -19,7 +19,7 @@ export class Author {
   @Column()
   LastName: string;
 
-  @ManyToMany(() => Book)
+  @ManyToMany(() => Book, { eager: true })
   @JoinTable()
   Books: Book[];
   //In order to create an object using the book entity I need to define constructors.
