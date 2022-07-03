@@ -13,8 +13,8 @@ export class BookService {
 
   async create(createBookDto: CreateBookDto) {
     try {
-      if (this.bookRepo.find(createBookDto))
-        throw Error('This book already exists');
+      const found: Book[] = await this.bookRepo.find(createBookDto);
+      if (found.length != 0) throw Error('This book already exists');
       else {
         return await this.bookRepo.save(this.bookRepo.create(createBookDto));
       }
@@ -28,11 +28,10 @@ export class BookService {
   }
 
   async findOne(Title: string): Promise<Book> {
-    try {
-      return await this.bookRepo.findOne({ where: { title: Title } });
-    } catch (error) {
-      return error.message;
-    }
+    const found: Book = await this.bookRepo.findOne({
+      where: { title: Title },
+    });
+    return found;
   }
 
   async findOneID(wanted: number): Promise<Book> {

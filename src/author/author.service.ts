@@ -13,12 +13,25 @@ export class AuthorService {
     private readonly bookService: BookService,
   ) {}
 
-  create(createAuthorDto: CreateAuthorDto) {
+  async create(createAuthorDto: CreateAuthorDto) {
     try {
-      if (this.authorRepo.find(createAuthorDto))
-        return 'This author already exists';
+      const found: Author[] = await this.authorRepo.find({
+        where: {
+          FirstName: createAuthorDto.FirstName,
+          LastName: createAuthorDto.LastName,
+        },
+      });
+      if (found.length != 0) throw Error('This author already exists');
       else {
-        return this.authorRepo.save(this.authorRepo.create(createAuthorDto));
+        const booklist: Book[] = await this.createArray(createAuthorDto.Books);
+        console.log('The book list is : ' + booklist);
+        return await this.authorRepo.save(
+          this.authorRepo.create({
+            FirstName: createAuthorDto.FirstName,
+            LastName: createAuthorDto.LastName,
+            Books: booklist,
+          }),
+        );
       }
     } catch (error) {
       return error.message;
@@ -33,7 +46,7 @@ export class AuthorService {
     }
   }
 
-  async findOne({ firstName, lastName }) {
+  async findOne({ firstName, lastName }): Promise<Author | undefined> {
     try {
       return await this.authorRepo.findOne({
         where: { FirstName: firstName, LastName: lastName },
@@ -123,11 +136,12 @@ export class AuthorService {
   //Creates an array of books
   async createArray(booknames: string[]) {
     const books: Book[] = [];
-    booknames.forEach(async (element) => {
-      if (this.bookService.findOne(element)) {
-        books.push(await this.bookService.findOne(element));
-      }
-    });
+    for (const bookname of booknames) {
+      const book: Book | undefined = await this.bookService.findOne(bookname);
+      books.push(book);
+      console.log(books);
+    }
+    console.log('The returned value: ' + books);
     return books;
   }
 }
