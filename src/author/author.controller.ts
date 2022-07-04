@@ -46,14 +46,12 @@ export class AuthorController {
 
   //update the lastname of the author
   @Patch('lastname')
-  updateLastName(@Body() updateLastName: NewLastName) {
+  async updateLastName(@Body() updateLastName: NewLastName) {
     //Gets the original first and last name, and then passes it in the update function
-    const firstName = updateLastName.FirstName;
-    const lastName = updateLastName.LastName;
-    return this.authorService.updateFirstName(
-      { firstName, lastName },
-      updateLastName.NewLastName,
-    );
+    const firstName: string = updateLastName.FirstName;
+    const lastName: string = updateLastName.LastName;
+    const nln: string = updateLastName.NewLastName;
+    return this.authorService.updateLastName({ firstName, lastName }, nln);
   }
 
   //updates the authors books
@@ -74,4 +72,6 @@ export class AuthorController {
     const lastName = author.LastName;
     return this.authorService.remove({ firstName, lastName });
   }
+
+  //If I want to edit the array of books in the autor entity, I will find the author first, and then save the array in a different var, delete the existing array and replace it with the the array after filtering it. It will be a patch http, not Delete.
 }

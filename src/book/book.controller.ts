@@ -42,8 +42,8 @@ export class BookController {
     return this.bookService.updateDesc(title, newDesc);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookService.remove(+id);
+  @Delete('delete')
+  remove(@Body() title: string) {
+    return this.bookService.remove(title);
   }
 }
