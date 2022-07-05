@@ -62,7 +62,7 @@ const updateLastNameData = ref(objectForLastname);
 
 // Fetch for adding books
 async function updateBooksFetch(
-  url = 'localhost:3000/author/books',
+  url = 'localhost:3000/api/author/books',
   Data1 = updateBooksData,
 ) {
   const response = await fetch(url, {
@@ -79,7 +79,7 @@ async function updateBooksFetch(
 }
 // Fetch for updating the first name
 async function updateFirstNameFetch(
-  url = 'localhost:3000/author/firstname',
+  url = 'localhost:3000/api/author/firstname',
   Data2 = updateFirstNameData,
 ) {
   const response = await fetch(url, {
@@ -96,7 +96,7 @@ async function updateFirstNameFetch(
 }
 // Fetch for updating the last name
 async function updateLastNameFetch(
-  url = 'localhost:3000/author/lastname',
+  url = 'localhost:3000/api/author/lastname',
   Data3 = updateLastNameData,
 ) {
   const response = await fetch(url, {

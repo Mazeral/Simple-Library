@@ -29,23 +29,24 @@ const bookForm = () => {
   isBook.value = !isBook.value;
 };
 //The post request for books script:
-async function postBook(url = 'localhost:3000/book/new', data = newBook.value) {
+async function postBook(
+  url = 'http://localhost:3000/api/book/new',
+  data = newBook.value,
+) {
+  const senttitle = data.title;
+  const sentdesc = data.description;
   const response = await fetch(url, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify({ title: senttitle, description: sentdesc }),
   });
-  console.log(
-    'a book post request has been sent',
-    data.title,
-    data.description,
-  );
   data.description = '';
   data.title = '';
-  return response.json();
+  console.log('foo bar test 2');
+  return response.text();
 }
 //post request for authors script:
 async function postAuthor(
-  url = 'localhost:3000/author',
+  url = 'http://localhost:3000/api/author/new',
   data = newAuthor.value,
 ) {
   const response = await fetch(url, {
@@ -86,7 +87,7 @@ async function postAuthor(
       </div>
     </form>
 
-    <form @submit.prevent="postAuthor" method="post">
+    <form @submit.prevent="postAuthor()">
       <!-- The author entity contains : first name, last name, an array of books.
       The book entity contains : the title and the description. -->
       <div id="newAuthor" v-if="isAuthor">
@@ -96,7 +97,7 @@ async function postAuthor(
           class="form-control"
           id="firstname"
           v-model="newAuthor.FirstName"
-          name="FirstName"
+          name="firstName"
         />
         <label for="lastname" class="form-label">Last name</label>
         <input
@@ -104,7 +105,7 @@ async function postAuthor(
           class="form-control"
           id="lastname"
           v-model="newAuthor.LastName"
-          name="LastName"
+          name="lastName"
         />
         <!-- button for submitting -->
         <button type="submit" class="btn btn-primary">
@@ -112,7 +113,7 @@ async function postAuthor(
         </button>
       </div>
     </form>
-    <form @submit.prevent="postBook">
+    <form @submit.prevent="postBook()">
       <div id="newBook" v-if="isBook">
         <label for="title" class="form-label">Title</label>
         <input

@@ -12,6 +12,7 @@ export class BookService {
   ) {}
 
   async create(createBookDto: CreateBookDto) {
+    console.log(createBookDto);
     try {
       const found: Book[] = await this.bookRepo.find(createBookDto);
       if (found.length != 0) throw Error('This book already exists');

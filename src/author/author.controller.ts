@@ -17,7 +17,7 @@ import { NewLastName } from './dto/new-lastName.dto';
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
   //creates an author
-  @Post()
+  @Post('new')
   create(@Body() createAuthorDto: CreateAuthorDto) {
     return this.authorService.create(createAuthorDto);
   }
