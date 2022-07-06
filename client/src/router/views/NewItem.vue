@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
+import * as axios from 'axios'; 
 //these varaibles by default are NOT reactive unless if ref was added to the variables
 //For example: const foo is not reactive
 //const foo = ref() is reactive
@@ -10,7 +11,7 @@ const title = ref('');
 const description = ref('');
 const FirstName = ref('');
 const LastName = ref('');
-const newBook = ref({ title: title.value, description: description.value });
+const newBook = reactive({ title: title, description: description });
 const newAuthor = ref({
   FirstName: FirstName.value,
   LastName: LastName.value,
@@ -28,22 +29,6 @@ const bookForm = () => {
   }
   isBook.value = !isBook.value;
 };
-//The post request for books script:
-async function postBook(
-  url = 'http://localhost:3000/api/book/new',
-  data = newBook.value,
-) {
-  const senttitle = data.title;
-  const sentdesc = data.description;
-  const response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify({ title: senttitle, description: sentdesc }),
-  });
-  data.description = '';
-  data.title = '';
-  console.log('foo bar test 2');
-  return response.text();
-}
 //post request for authors script:
 async function postAuthor(
   url = 'http://localhost:3000/api/author/new',
@@ -57,6 +42,23 @@ async function postAuthor(
   data.lastName = '';
   console.log('an author post request has been sent');
   return response.json();
+}
+//The post request for books script:
+async function postBook(
+  url = 'http://localhost:3000/api/book/new',
+  data = newBook,
+) {
+  axios
+    .post(url, {
+      title: data.title,
+      description: data.description,
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => console.log(err));
+  data.title = '';
+  data.description = '';
 }
 </script>
 <template>
@@ -120,7 +122,7 @@ async function postAuthor(
           type="text"
           class="form-control"
           id="title"
-          v-model="newBook.title"
+          v-model="title"
           name="title"
         />
         <label for="details" class="form-label">Details</label>
@@ -129,7 +131,7 @@ async function postAuthor(
           cols="30"
           rows="10"
           class="form-control"
-          v-model="newBook.description"
+          v-model="description"
           name="desciption"
         ></textarea>
         <!-- button for submitting -->
