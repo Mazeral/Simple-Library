@@ -1,9 +1,10 @@
 <script setup>
 import { reactive, ref } from 'vue';
-import * as axios from 'axios'; 
+import * as axios from 'axios';
 //these varaibles by default are NOT reactive unless if ref was added to the variables
 //For example: const foo is not reactive
 //const foo = ref() is reactive
+// Im using here reactive for the objects to make it easier to use.
 const isBook = ref(false);
 const isAuthor = ref(false);
 //The post request data:
@@ -12,9 +13,9 @@ const description = ref('');
 const FirstName = ref('');
 const LastName = ref('');
 const newBook = reactive({ title: title, description: description });
-const newAuthor = ref({
-  FirstName: FirstName.value,
-  LastName: LastName.value,
+const newAuthor = reactive({
+  firstName: FirstName,
+  lastName: LastName,
 });
 //functions to make only one check box work at a time.
 const authorForm = () => {
@@ -32,33 +33,36 @@ const bookForm = () => {
 //post request for authors script:
 async function postAuthor(
   url = 'http://localhost:3000/api/author/new',
-  data = newAuthor.value,
+  data = newAuthor,
 ) {
-  const response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+  // POSTING WITH AXIOS LETS GOOOOO
+  const response = axios
+    .post(url, newAuthor)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => console.log(err));
   data.firstName = '';
   data.lastName = '';
+
   console.log('an author post request has been sent');
-  return response.json();
+  return response;
 }
 //The post request for books script:
 async function postBook(
   url = 'http://localhost:3000/api/book/new',
   data = newBook,
 ) {
-  axios
-    .post(url, {
-      title: data.title,
-      description: data.description,
-    })
+  // POSTING WITH AXIOS LETS GOOOOO
+  const response = axios
+    .post(url, newBook)
     .then((res) => {
       console.log(res);
     })
     .catch((err) => console.log(err));
   data.title = '';
   data.description = '';
+  return response.json();
 }
 </script>
 <template>

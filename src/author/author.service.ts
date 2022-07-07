@@ -23,8 +23,11 @@ export class AuthorService {
       });
       if (found.length != 0) throw Error('This author already exists');
       else {
-        const booklist: Book[] = await this.createArray(createAuthorDto.Books);
-        console.log('The book list is : ' + booklist);
+        let booklist: Book[] | null = [];
+        if (createAuthorDto.Books != null) {
+          booklist = await this.createArray(createAuthorDto.Books);
+          console.log('The book list is : ' + booklist);
+        }
         return await this.authorRepo.save(
           this.authorRepo.create({
             FirstName: createAuthorDto.FirstName,
