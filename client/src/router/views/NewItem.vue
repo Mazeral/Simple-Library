@@ -12,10 +12,13 @@ const title = ref('');
 const description = ref('');
 const FirstName = ref('');
 const LastName = ref('');
+const bookname = ref('');
+const booklist = ref([]);
 const newBook = reactive({ title: title, description: description });
 const newAuthor = reactive({
   firstName: FirstName,
   lastName: LastName,
+  Books: booklist,
 });
 //functions to make only one check box work at a time.
 const authorForm = () => {
@@ -30,6 +33,8 @@ const bookForm = () => {
   }
   isBook.value = !isBook.value;
 };
+//A function for the book list array
+const addBook = () => newAuthor.Books.push(bookname.value);
 //post request for authors script:
 async function postAuthor(
   url = 'http://localhost:3000/api/author/new',
@@ -113,6 +118,24 @@ async function postBook(
           v-model="newAuthor.LastName"
           name="lastName"
         />
+        <form @submit.prevent="addBook()">
+          <!-- form for the book list insertion via the var booklist -->
+          <label for="booklist" class="form-label"
+            >Add a book to the author list of books</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="bookname"
+            v-model="bookname"
+            name="bookname"
+          />
+          <button type="submit" class="btn btn-primary">Add a book!</button>
+          <button type="button" class="btn btn-danger" @click="booklist = []">
+            Reset the list
+          </button>
+          <div>list of books : {{ booklist }}</div>
+        </form>
         <!-- button for submitting -->
         <button type="submit" class="btn btn-primary">
           Create new author!

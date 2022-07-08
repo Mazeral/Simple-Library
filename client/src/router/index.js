@@ -4,7 +4,7 @@ import Home from './views/HomeView.vue';
 import Authors from './views/AuthorsView.vue';
 import Books from './views/BooksView.vue';
 import Update from './views/UpdateView.vue';
-
+import Remove from './views/RemoveView.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -32,6 +32,11 @@ const router = createRouter({
       path: '/update',
       name: 'update',
       component: Update,
+    },
+    {
+      path: '/remove',
+      name: 'remove',
+      componenet: Remove,
     },
   ],
 });
