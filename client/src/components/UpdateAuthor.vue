@@ -1,7 +1,8 @@
 <script setup>
 //multple forms that reach to different endpoints.
 //easy
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
+import * as axios from 'axios';
 // variables for the checkboxes
 const booksForm = ref(false);
 const firstNameForm = ref(false);
@@ -10,6 +11,7 @@ const lastNameForm = ref(false);
 const firstName = ref('');
 const lastName = ref('');
 const books = ref([]);
+const bookname = ref('');
 // vars for receiving the updating values
 const newFirstName = ref('');
 const newLastName = ref('');
@@ -35,81 +37,77 @@ const lastNameUpdate = () => {
   }
   lastNameForm.value = !lastNameForm.value;
 };
+// A function for the array of book names:
+const addBook = () => objectForBooks.books.push(bookname.value);
 // objects that contain the updating informations
 // The object containing the data for adding books
-const objectForBooks = {
-  author: { firstName: firstName.value, LastName: lastName.value },
-  list: books.value,
-};
+const objectForBooks = reactive({
+  author: { FirstName: firstName, LastName: lastName },
+  books: books.value,
+});
 // The variable that have the object.
-const updateBooksData = ref(objectForBooks);
 // The object containing the data for changing the first name:
-const objectForFirstName = {
+const objectForFirstName = reactive({
   author: { FirstName: firstName.value, LastName: lastName.value },
   NewFirstName: newFirstName.value,
-};
-// the varible that contains the object :
-const updateFirstNameData = ref(objectForFirstName);
+});
 
 // The object containing the data for chaning the last name:
-const objectForLastname = {
+const objectForLastname = reactive({
   author: { FirstName: firstName.value, LastName: lastName.value },
   LastName: newLastName.value,
-};
-// The variable that contains the object:
-const updateLastNameData = ref(objectForLastname);
+});
 // fetch requests for the buttons!
 
 // Fetch for adding books
 async function updateBooksFetch(
-  url = 'localhost:3000/api/author/books',
-  Data1 = updateBooksData,
+  url = 'http://localhost:3000/api/author/books',
+  Data = objectForBooks,
 ) {
-  const response = await fetch(url, {
-    // PATCH is ALWAYS for updating.
-    method: 'PATCH',
-    body: JSON.stringify(Data1),
+  const response = await axios({
+    method: 'patch',
+    url: url,
+    data: Data,
   });
-  // YOLO
-  Data1.value.author.firstName = '';
-  Data1.value.author.lastName = '';
-  Data1.value.list = null;
+  firstName.value = '';
+  lastName.value = '';
+  books.value = [];
   console.log('an author post request has been sent');
-  return response.json();
+  return response;
 }
 // Fetch for updating the first name
 async function updateFirstNameFetch(
-  url = 'localhost:3000/api/author/firstname',
-  Data2 = updateFirstNameData,
+  url = 'http://localhost:3000/api/author/firstname',
+  Data = objectForFirstName,
 ) {
-  const response = await fetch(url, {
-    // PATCH is ALWAYS for updating.
-    method: 'PATCH',
-    body: JSON.stringify(Data2),
+  const response = await axios({
+    method: 'patch',
+    url: url,
+    data: Data,
   });
   // YOLO
-  Data2.value.author.firstName = '';
-  Data2.value.author.lastName = '';
-  Data2.value.list = null;
+  firstName.value = '';
+  lastName.value = '';
+  books.value = [];
   console.log('an author post request has been sent');
-  return response.json();
+  return response;
 }
 // Fetch for updating the last name
 async function updateLastNameFetch(
-  url = 'localhost:3000/api/author/lastname',
-  Data3 = updateLastNameData,
+  url = 'http://localhost:3000/api/author/lastname',
+  Data = objectForLastname,
 ) {
-  const response = await fetch(url, {
-    // PATCH is ALWAYS for updating.
-    method: 'PATCH',
-    body: JSON.stringify(Data3),
+  const response = await axios({
+    method: 'patch',
+    url: url,
+    data: Data,
   });
   // YOLO
-  Data3.value.author.firstName = '';
-  Data3.value.author.lastName = '';
-  Data3.value.list = null;
+  firstName.value = '';
+  lastName.value = '';
+  books.value = [];
   console.log('an author post request has been sent');
-  return response.json();
+  return response;
 }
 </script>
 <template>
@@ -155,7 +153,7 @@ async function updateLastNameFetch(
     </form>
 
     <!-- A form to add books -->
-    <form v-if="booksForm" @submit.prevent="updateBooksFetch">
+    <form v-if="booksForm" @submit.prevent="updateBooksFetch()">
       <div>
         <label for="FirstName" class="form-label"
           >Enter the fist name of the author</label
@@ -175,21 +173,30 @@ async function updateLastNameFetch(
           v-model="lastName"
           required
         />
-        <label for="Book" class="form-label">Enter a book he wrote</label>
+        <label for="booklist" class="form-label"
+          >Add a book to the author list of books</label
+        >
         <input
           type="text"
-          name=""
-          id="Book"
           class="form-control"
-          v-model="books"
+          id="bookname"
+          v-model="bookname"
+          name="bookname"
         />
+        <button type="button" class="btn btn-primary" @click="addBook()">
+          Add a book!
+        </button>
+        <button type="button" class="btn btn-danger" @click="books = []">
+          Reset the list
+        </button>
+        <div>list of books : {{ books }}</div>
+        <button type="submit" class="btn btn-primary">
+          Add a book to the author!
+        </button>
       </div>
-      <button type="submit" class="btn btn-primary">
-        Add a book to the author!
-      </button>
     </form>
     <!-- A form to change the first name. -->
-    <form v-if="firstNameForm" @submit.prevent="updateFirstNameFetch">
+    <form v-if="firstNameForm" @submit.prevent="updateFirstNameFetch()">
       <div>
         <label for="OldFirstName" class="form-label"
           >Enter the authors original first name</label
@@ -198,7 +205,7 @@ async function updateLastNameFetch(
           type="text"
           name=""
           id="OldFirstName"
-          class="form-label"
+          class="form-control"
           v-model="firstName"
         />
         <label for="LastName" class="form-label"
@@ -227,7 +234,7 @@ async function updateLastNameFetch(
       </button>
     </form>
     <!-- A form to change the last name. -->
-    <form v-if="lastNameForm" @submit.prevent="updateLastNameFetch">
+    <form v-if="lastNameForm" @submit.prevent="updateLastNameFetch()">
       <div>
         <label for="FirstName" class="form-label"
           >Enter the authors first name</label
@@ -236,7 +243,7 @@ async function updateLastNameFetch(
           type="text"
           name=""
           id="FirstName"
-          class="form-label"
+          class="form-control"
           v-model="firstName"
         />
         <label for="OldLastName" class="form-label"

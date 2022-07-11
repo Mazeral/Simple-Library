@@ -75,20 +75,25 @@ export class AuthorService {
     //Search for an author that matches these options, if he does exist update him with the books
     //Array, if not return error.
     try {
-      const author: Author = await this.authorRepo.findOneOrFail({
-        where: {
-          FirstName: firstName,
-          LastName: lastName,
-        },
-      });
+      const author: Author = await this.findOne({ firstName, lastName });
+      console.log(author);
       //needs to be fixed: if a book title exists, add it.
       //These update functions only add a title, not a book object.
       // Has been fixed.
+      const id: number = author.id;
       if (author) {
-        const bookArray: Book[] = await this.createArray(books);
-        this.authorRepo.update(author.id, { Books: bookArray });
-      }
+        await this.authorRepo.update(id, {
+          Books: author.Books.concat(await this.createArray(books)),
+        });
+        // await this.authorRepo  USING THE createQueryBuilder()
+        //   .createQueryBuilder()
+        //   .update(author)
+        //   .set({ Books: author.Books.concat(await this.createArray(books)) })
+        //   .where('id  = :id', { id: id })
+        //  .execute();
+      } else throw Error('Something went wrong...');
     } catch (error) {
+      console.log(error.message);
       return error.message;
     }
   }
@@ -142,9 +147,9 @@ export class AuthorService {
     for (const bookname of booknames) {
       const book: Book | undefined = await this.bookService.findOne(bookname);
       books.push(book);
-      console.log(books);
+      //console.log(books); This was for testing
     }
-    console.log('The returned value: ' + books);
+    //console.log('The returned value: ' + books); This was for testing
     return books;
   }
 }

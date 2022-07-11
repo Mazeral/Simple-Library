@@ -19,7 +19,7 @@ export class Author {
   @Column()
   LastName: string;
 
-  @ManyToMany(() => Book, { eager: true })
+  @ManyToMany(() => Book, (book) => book.authors, { eager: true }) // (book) => book.authors is to be able to refer to the related entities from the entity.
   @JoinTable()
   Books: Book[];
   //In order to create an object using the book entity I need to define constructors.
