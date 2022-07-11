@@ -1,23 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
-import { Book } from 'src/entities/book.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-
+import { PrismaService } from 'src/prisma.service';
+import { Book } from '@prisma/client';
 @Injectable()
 export class BookService {
-  constructor(
-    @InjectRepository(Book)
-    private bookRepo: Repository<Book>,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createBookDto: CreateBookDto) {
     console.log(createBookDto);
     try {
-      const found: Book[] = await this.bookRepo.find(createBookDto);
-      if (found.length != 0) throw Error('This book already exists');
+      const found: Book = await this.prisma.book.findFirst({
+        where: {
+          Title: createBookDto.title,
+          Description: createBookDto.description,
+        },
+      });
+      if (found) throw Error('This book already exists');
       else {
-        return await this.bookRepo.save(this.bookRepo.create(createBookDto));
+        return await this.prisma.book.create({
+          data: {
+            Title: createBookDto.title,
+            Description: createBookDto.description,
+          },
+        });
       }
     } catch (Error) {
       console.log(Error.message);
@@ -25,19 +30,19 @@ export class BookService {
   }
 
   findAll() {
-    return this.bookRepo.find();
+    return this.prisma.book.findMany();
   }
 
   async findOne(Title: string): Promise<Book> {
-    const found: Book = await this.bookRepo.findOne({
-      where: { title: Title },
+    const found: Book = await this.prisma.book.findFirst({
+      where: { Title: Title },
     });
     return found;
   }
 
   async findOneID(wanted: number): Promise<Book> {
     try {
-      return await this.bookRepo.findOne({ where: { id: wanted } });
+      return await this.prisma.book.findFirst({ where: { id: wanted } });
     } catch (error) {
       return error.message;
     }
@@ -45,11 +50,17 @@ export class BookService {
   //Create multiple update services to make mutliple update endpoints, DIVIDE AND CONQUOER
   async updateTitle(Title: string, newTitle: string) {
     try {
-      const book: Book = await this.bookRepo.findOne({
-        where: { title: Title },
+      const book: Book = await this.prisma.book.findFirst({
+        where: { Title: Title },
       });
+      const ID = book.id;
       if (book) {
-        return this.bookRepo.update(book.id, { title: newTitle });
+        return this.prisma.book.update({
+          where: { id: ID },
+          data: {
+            Title: newTitle,
+          },
+        });
       } else throw Error(`This book doesn't exist!`);
     } catch (Error) {
       return Error.message;
@@ -58,11 +69,17 @@ export class BookService {
 
   async updateDesc(Title: string, newDesc: string) {
     try {
-      const book: Book = await this.bookRepo.findOne({
-        where: { title: Title },
+      const book: Book = await this.prisma.book.findFirst({
+        where: { Title: Title },
       });
       if (book) {
-        return this.bookRepo.update(book.id, { description: newDesc });
+        const ID = book.id;
+        return this.prisma.book.update({
+          where: { id: ID },
+          data: {
+            Description: newDesc,
+          },
+        });
       } else throw Error(`This book doesn't exist!`);
     } catch (error) {
       return error.message;
@@ -71,8 +88,10 @@ export class BookService {
 
   async remove(Title: string) {
     try {
-      const book = await this.bookRepo.findOne({ where: { title: Title } });
-      this.bookRepo.remove(book);
+      const book = await this.prisma.book.findFirst({
+        where: { Title: Title },
+      });
+      this.prisma.book.delete({ where: book });
       return { deleted: true };
     } catch (err) {
       return { deleted: false, message: err.message };

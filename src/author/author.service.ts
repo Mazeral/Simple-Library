@@ -1,40 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { Author } from 'src/entities/author.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Book } from 'src/entities/book.entity';
 import { BookService } from 'src/book/book.service';
+import { Author, Book } from '.prisma/client';
+import { PrismaService } from 'src/prisma.service';
 @Injectable()
 export class AuthorService {
   constructor(
-    @InjectRepository(Author)
-    private authorRepo: Repository<Author>,
+    private readonly prisma: PrismaService,
     private readonly bookService: BookService,
   ) {}
 
   async create(createAuthorDto: CreateAuthorDto) {
     try {
-      const found: Author[] = await this.authorRepo.find({
+      const found: Author = await this.prisma.author.findFirst({
         where: {
           FirstName: createAuthorDto.FirstName,
           LastName: createAuthorDto.LastName,
         },
       });
-      if (found.length != 0) throw Error('This author already exists');
+      if (found) throw Error('This author already exists');
       else {
         let booklist: Book[] | null = [];
         if (createAuthorDto.Books != null) {
           booklist = await this.createArray(createAuthorDto.Books);
           console.log('The book list is : ' + booklist);
         }
-        return await this.authorRepo.save(
-          this.authorRepo.create({
+        return await this.prisma.author.create({
+          data: {
             FirstName: createAuthorDto.FirstName,
             LastName: createAuthorDto.LastName,
-            Books: booklist,
-          }),
-        );
+            books: createAuthorDto.Books,
+          },
+        });
       }
     } catch (error) {
       return error.message;
@@ -43,7 +40,7 @@ export class AuthorService {
 
   async findAll() {
     try {
-      return await this.authorRepo.find();
+      return await this.prisma.author.findMany();
     } catch (error) {
       return error.message;
     }
@@ -51,7 +48,7 @@ export class AuthorService {
 
   async findOne({ firstName, lastName }): Promise<Author | undefined> {
     try {
-      return await this.authorRepo.findOne({
+      return await this.prisma.author.findFirst({
         where: { FirstName: firstName, LastName: lastName },
       });
     } catch (error) {
@@ -61,7 +58,7 @@ export class AuthorService {
 
   async findOneID(wanted: number) {
     try {
-      return await this.authorRepo.findOne({
+      return await this.prisma.author.findFirst({
         where: { id: wanted },
       });
     } catch (error) {
@@ -76,21 +73,29 @@ export class AuthorService {
     //Array, if not return error.
     try {
       const author: Author = await this.findOne({ firstName, lastName });
+      const authorBook: any = await this.prisma.author.findMany({
+        where: {
+          id: author.id,
+        },
+        select: {
+          books: true,
+        },
+      });
+      const authorbooklist: any = authorBook.books;
       console.log(author);
       //needs to be fixed: if a book title exists, add it.
       //These update functions only add a title, not a book object.
       // Has been fixed.
       const id: number = author.id;
       if (author) {
-        await this.authorRepo.update(id, {
-          Books: author.Books.concat(await this.createArray(books)),
+        await this.prisma.author.update({
+          where: {
+            id: id,
+          },
+          data: {
+            books: authorbooklist.concat(await this.createArray(books)),
+          },
         });
-        // await this.authorRepo  USING THE createQueryBuilder()
-        //   .createQueryBuilder()
-        //   .update(author)
-        //   .set({ Books: author.Books.concat(await this.createArray(books)) })
-        //   .where('id  = :id', { id: id })
-        //  .execute();
       } else throw Error('Something went wrong...');
     } catch (error) {
       console.log(error.message);
