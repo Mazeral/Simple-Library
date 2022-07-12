@@ -7,12 +7,11 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { Book } from 'src/entities/book.entity';
-import { UpdateResult } from 'typeorm';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDesc } from './dto/update-book-desc.dto';
 import { UpdateBookTitle } from './dto/update-book-title.dto';
+import { Book } from '.prisma/client';
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
@@ -30,13 +29,13 @@ export class BookController {
   }
 
   @Patch('changetitle')
-  updateTitle(@Body() updateBookTitle: UpdateBookTitle): Promise<UpdateResult> {
+  updateTitle(@Body() updateBookTitle: UpdateBookTitle) {
     const title = updateBookTitle.title;
     const newTitle = updateBookTitle.newTitle;
     return this.bookService.updateTitle(title, newTitle);
   }
   @Patch('desc')
-  updateDesc(@Body() updateBookDesc: UpdateBookDesc): Promise<UpdateResult> {
+  updateDesc(@Body() updateBookDesc: UpdateBookDesc) {
     const title = updateBookDesc.title;
     const newDesc = updateBookDesc.newDesc;
     return this.bookService.updateDesc(title, newDesc);

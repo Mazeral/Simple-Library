@@ -20,7 +20,7 @@ export class AuthorService {
       });
       if (found) throw Error('This author already exists');
       else {
-        let booklist: Book[] | null = [];
+        let booklist: any = [];
         if (createAuthorDto.Books != null) {
           booklist = await this.createArray(createAuthorDto.Books);
           console.log('The book list is : ' + booklist);
@@ -29,7 +29,7 @@ export class AuthorService {
           data: {
             FirstName: createAuthorDto.FirstName,
             LastName: createAuthorDto.LastName,
-            books: createAuthorDto.Books,
+            books: booklist,
           },
         });
       }
@@ -105,14 +105,18 @@ export class AuthorService {
   async updateFirstName({ firstName, lastName }, newFirstName: string) {
     //Changed the first name
     try {
-      const author: Author = await this.authorRepo.findOneOrFail({
+      const author: Author = await this.prisma.author.findFirstOrThrow({
         where: {
           FirstName: firstName,
           LastName: lastName,
         },
       });
       if (author) {
-        this.authorRepo.update(author.id, { FirstName: newFirstName });
+        const ID = author.id;
+        this.prisma.author.update({
+          where: { id: ID },
+          data: { FirstName: newFirstName },
+        });
       }
     } catch (error) {
       return error.message;
@@ -122,14 +126,18 @@ export class AuthorService {
   async updateLastName({ firstName, lastName }, newLastName: string) {
     //changes the last name
     try {
-      const author: Author = await this.authorRepo.findOneOrFail({
+      const author: Author = await this.prisma.author.findFirstOrThrow({
         where: {
           FirstName: firstName,
           LastName: lastName,
         },
       });
       if (author) {
-        this.authorRepo.update(author.id, { LastName: newLastName });
+        const ID = author.id;
+        this.prisma.author.update({
+          where: { id: ID },
+          data: { LastName: newLastName },
+        });
       }
     } catch (error) {
       return error.message;
@@ -139,7 +147,7 @@ export class AuthorService {
   async remove({ firstName, lastName }) {
     try {
       const author = await this.findOne({ firstName, lastName });
-      await this.authorRepo.remove(author);
+      await this.prisma.author.delete({ where: author });
       return { deleted: true };
     } catch (err) {
       return { deleted: false, message: err.message };

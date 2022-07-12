@@ -14,8 +14,8 @@ console.log(books.value);
 <template>
   <div class="container">
     <div class="card" v-for="book in books" :key="book.id">
-      <div class="card-header">{{ book.title }}</div>
-      <div class="card-body">{{ book.description }}</div>
+      <div class="card-header">{{ book.Title }}</div>
+      <div class="card-body">{{ book.Description }}</div>
     </div>
     <div>{{ books.value }}</div>
   </div>

@@ -29,8 +29,8 @@ export class BookService {
     }
   }
 
-  findAll() {
-    return this.prisma.book.findMany();
+  async findAll(): Promise<Book[]> {
+    return await this.prisma.book.findMany();
   }
 
   async findOne(Title: string): Promise<Book> {
@@ -86,12 +86,23 @@ export class BookService {
     }
   }
 
-  async remove(Title: string) {
+  async remove(title: string) {
     try {
-      const book = await this.prisma.book.findFirst({
-        where: { Title: Title },
+      const bookID: {
+        id: number;
+      } = await this.prisma.book.findFirst({
+        where: {
+          Title: title,
+        },
+        select: {
+          id: true,
+        },
       });
-      this.prisma.book.delete({ where: book });
+      await this.prisma.book.delete({
+        where: {
+          id: bookID.id,
+        },
+      });
       return { deleted: true };
     } catch (err) {
       return { deleted: false, message: err.message };
