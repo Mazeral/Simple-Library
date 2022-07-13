@@ -59,10 +59,8 @@ export class AuthorController {
   updateAuthorBooks(@Body() updateAuthorBooks: AuthorBooks) {
     const firstName = updateAuthorBooks.FirstName;
     const lastName = updateAuthorBooks.LastName;
-    this.authorService.updateBooks(
-      { firstName, lastName },
-      updateAuthorBooks.books,
-    );
+    const books: string[] = updateAuthorBooks.books;
+    this.authorService.updateBooks({ firstName, lastName }, books);
   }
 
   //removes an author from the database.

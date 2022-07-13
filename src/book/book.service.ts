@@ -17,10 +17,12 @@ export class BookService {
       });
       if (found) throw Error('This book already exists');
       else {
+        const title: string = createBookDto.title;
+        const description: string = createBookDto.description;
         return await this.prisma.book.create({
           data: {
-            Title: createBookDto.title,
-            Description: createBookDto.description,
+            Title: title,
+            Description: description,
           },
         });
       }
@@ -105,7 +107,7 @@ export class BookService {
       });
       return { deleted: true };
     } catch (err) {
-      return { deleted: false, message: err.message };
+      return err.message;
     }
   }
 }

@@ -42,7 +42,7 @@ export class BookController {
   }
 
   @Delete('delete')
-  remove(@Body() title: string) {
-    return this.bookService.remove(title);
+  remove(@Body('title') Title: string) {
+    return this.bookService.remove(Title);
   }
 }
