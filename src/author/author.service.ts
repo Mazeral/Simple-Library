@@ -42,7 +42,14 @@ export class AuthorService {
 
   async findAll() {
     try {
-      return await this.prisma.author.findMany();
+      return await this.prisma.author.findMany({
+        select: {
+          id: true,
+          FirstName: true,
+          LastName: true,
+          books: true,
+        },
+      });
     } catch (error) {
       return error.message;
     }
@@ -93,13 +100,15 @@ export class AuthorService {
       const cleanarray: any = booklist.filter(
         (item, index) => booklist.indexOf(item) === index,
       );
-      console.log(author);
+      console.log(cleanarray);
+      const object: any = { cleanarray };
+      console.log(object['cleanarray']);
       //needs to be fixed: if a book title exists, add it.
       //These update functions only add a title, not a book object.
       // Has been fixed.
       const id: number = author.id;
-
-      return this.prisma.author.update({
+      console.log(id + 'this is the id');
+      return this.prisma.author.updateMany({
         where: {
           id: id,
         },
@@ -167,9 +176,18 @@ export class AuthorService {
 
   //Creates an array of books
   async createArray(booknames: string[]) {
-    const books: Book[] = [];
+    const books = [];
     for (const bookname of booknames) {
-      const book: Book | undefined = await this.bookService.findOne(bookname);
+      const book = await this.prisma.book.findFirstOrThrow({
+        where: {
+          Title: bookname,
+        },
+        select: {
+          Title: true,
+          Description: true,
+          authors: true,
+        },
+      });
       books.push(book);
       //console.log(books); This was for testing
     }

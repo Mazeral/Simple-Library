@@ -32,7 +32,14 @@ export class BookService {
   }
 
   async findAll(): Promise<Book[]> {
-    return await this.prisma.book.findMany();
+    return this.prisma.book.findMany({
+      select: {
+        id: true,
+        Title: true,
+        Description: true,
+        authors: true,
+      },
+    });
   }
 
   async findOne(Title: string): Promise<Book> {
