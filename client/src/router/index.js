@@ -36,7 +36,7 @@ const router = createRouter({
     {
       path: '/remove',
       name: 'remove',
-      componenet: Remove,
+      component: Remove,
     },
   ],
 });

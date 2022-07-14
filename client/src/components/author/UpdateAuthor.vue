@@ -64,11 +64,7 @@ async function updateBooksFetch(
   url = 'http://localhost:3000/api/author/books',
   Data = objectForBooks,
 ) {
-  const response = await axios({
-    method: 'patch',
-    url: url,
-    data: Data,
-  });
+  const response = await axios.patch(url, Data);
   firstName.value = '';
   lastName.value = '';
   books.value = [];
@@ -80,11 +76,7 @@ async function updateFirstNameFetch(
   url = 'http://localhost:3000/api/author/firstname',
   Data = objectForFirstName,
 ) {
-  const response = await axios({
-    method: 'patch',
-    url: url,
-    data: Data,
-  });
+  const response = await axios.patch(url, Data);
   // YOLO
   firstName.value = '';
   lastName.value = '';
@@ -97,11 +89,7 @@ async function updateLastNameFetch(
   url = 'http://localhost:3000/api/author/lastname',
   Data = objectForLastname,
 ) {
-  const response = await axios({
-    method: 'patch',
-    url: url,
-    data: Data,
-  });
+  const response = await axios.patch(url, Data);
   // YOLO
   firstName.value = '';
   lastName.value = '';

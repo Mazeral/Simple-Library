@@ -43,11 +43,7 @@ async function titlePatch(
   url = 'http://localhost:3000/api/book/title',
   data = titleFormData,
 ) {
-  const response = await axios({
-    method: 'patch',
-    data: data,
-    url: url,
-  });
+  const response = await axios.patch(url, data);
   title.value = '';
   newTitle.value = '';
   desc.value = '';
@@ -57,11 +53,7 @@ async function descPatch(
   url = 'http://localhost:3000/api/book/title',
   data = descFormData,
 ) {
-  const response = await axios({
-    method: 'patch',
-    data: data,
-    url: url,
-  });
+  const response = await axios.patch(url, data);
   title.value = '';
   newDesc.value = '';
   desc.value = '';
@@ -125,6 +117,7 @@ async function descPatch(
           required
         />
       </div>
+      <button class="btn btn-primary">Change the book title</button>
     </form>
     <!-- Form for changing the desc -->
     <form v-if="descForm" @submit.prevent="descPatch()">
@@ -152,6 +145,7 @@ async function descPatch(
           class="form-control"
         />
       </div>
+      <button class="btn btn-primary">Change the book description</button>
     </form>
   </div>
 </template>
