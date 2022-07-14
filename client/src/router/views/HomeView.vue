@@ -1,6 +1,6 @@
 <script setup>
-import AuthorCard from '../../components/AuthorCard.vue';
-import BookCard from '../../components/BookCard.vue';
+import AuthorCard from '../../components/author/AuthorCard.vue';
+import BookCard from '../../components/book/BookCard.vue';
 </script>
 <template>
   <div class="container">
