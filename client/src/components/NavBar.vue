@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router';
     <div class="container">
       <ul class="navbar-nav">
         <li class="nav-item">
-            <router-link :to="{ name: 'home' }" class="nav-link"
+          <router-link :to="{ name: 'home' }" class="nav-link"
             ><span class="fw-bold text-white">Home</span>
           </router-link>
         </li>

@@ -20,7 +20,7 @@ export class AuthorService {
       });
       if (found) throw Error('This author already exists');
       else {
-        let booklist: any = undefined;
+        let booklist: any = [];
         if (
           createAuthorDto.Books != null &&
           createAuthorDto.Books != undefined
@@ -31,7 +31,9 @@ export class AuthorService {
           data: {
             FirstName: createAuthorDto.FirstName,
             LastName: createAuthorDto.LastName,
-            books: booklist,
+            books: {
+              create: booklist,
+            },
           },
         });
       }
@@ -80,41 +82,35 @@ export class AuthorService {
   async updateBooks({ firstName, lastName }, books: string[]) {
     //Search for an author that matches these options, if he does exist update him with the books
     //Array, if not return error.
-    console.log(books);
+    //USE FOR EACH!!!!!!!!!!!!!!!!!!!!!!!
+
+    //Checks if there is an author
     try {
-      const author: { books: Book[]; id: number } =
-        await this.prisma.author.findFirstOrThrow({
+      const author: { id: number } = await this.prisma.author.findFirstOrThrow({
+        where: {
+          FirstName: firstName,
+          LastName: lastName,
+        },
+        select: {
+          id: true,
+        },
+      });
+      //creates an array of id for the books to connect, and then uses async await arrow function
+      //to complete job
+      const conninfo: number[] = await this.createArray(books);
+      conninfo.forEach(async (bookId) => {
+        return await this.prisma.author.update({
           where: {
-            FirstName: firstName,
-            LastName: lastName,
+            id: author.id,
           },
-          select: {
-            id: true,
-            books: true,
+          data: {
+            books: {
+              connect: {
+                id: bookId,
+              },
+            },
           },
         });
-      console.log(author);
-      const list = await this.createArray(books);
-      const authorbooklist: Book[] = author.books;
-      const booklist: Book[] = authorbooklist.concat(list);
-      const cleanarray: any = booklist.filter(
-        (item, index) => booklist.indexOf(item) === index,
-      );
-      console.log(cleanarray);
-      const object: any = { cleanarray };
-      console.log(object['cleanarray']);
-      //needs to be fixed: if a book title exists, add it.
-      //These update functions only add a title, not a book object.
-      // Has been fixed.
-      const id: number = author.id;
-      console.log(id + 'this is the id');
-      return this.prisma.author.updateMany({
-        where: {
-          id: id,
-        },
-        data: {
-          books: cleanarray,
-        },
       });
     } catch (error) {
       console.log(error.message);
@@ -176,22 +172,20 @@ export class AuthorService {
 
   //Creates an array of books
   async createArray(booknames: string[]) {
-    const books = [];
+    const books: number[] = [];
     for (const bookname of booknames) {
       const book = await this.prisma.book.findFirstOrThrow({
         where: {
           Title: bookname,
         },
         select: {
-          Title: true,
-          Description: true,
-          authors: true,
+          id: true,
         },
       });
-      books.push(book);
-      //console.log(books); This was for testing
+      books.push(book.id);
+      console.log(books);
     }
-    //console.log('The returned value: ' + books); This was for testing
+    console.log(books);
     return books;
   }
 }

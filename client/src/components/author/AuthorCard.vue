@@ -1,16 +1,22 @@
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
 // #1 fetch the data and insert them into local vars
 let authors = ref([]);
-fetch('http://localhost:3000/api/author/', {
-  method: 'GET',
-  mode: 'cors',
-})
-  .then((res) => res.json())
+// if I wanted fetch
+// fetch('http://localhost:3000/api/author/', {
+//   method: 'GET',
+//   mode: 'cors',
+// })
+//   .then((res) => res.json())
+//   .then((data) => (authors.value = data))
+//   .catch((err) => console.log(err.message));
+axios
+  .get('http://localhost:3000/api/author')
+  .then((res) => res.data)
   .then((data) => (authors.value = data))
   .catch((err) => console.log(err.message));
-
-// #2 use the vars and make them in the template
+// #2 use the vars and make them in the templatez
 </script>
 
 <template>
@@ -22,6 +28,7 @@ fetch('http://localhost:3000/api/author/', {
       </div>
       <!-- In order to output a item of the object use : author.Books.map((book) => book.title) -->
       <div
+        v-if="author.Books != undefined"
         class="card-body"
         v-for="title in author.Books.map((book) => book.title)"
         :key="title"
