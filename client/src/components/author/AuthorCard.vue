@@ -27,13 +27,14 @@ axios
         Last Name: {{ author.LastName }}
       </div>
       <!-- In order to output a item of the object use : author.Books.map((book) => book.title) -->
-      <div
-        v-if="author.Books != undefined"
-        class="card-body"
-        v-for="title in author.Books.map((book) => book.title)"
-        :key="title"
-      >
-        {{ title }}
+      <div v-if="author.books != undefined">
+        <div
+          class="card-body"
+          v-for="title in author.books.map((book) => book.Title)"
+          :key="title"
+        >
+          {{ title }}
+        </div>
       </div>
     </div>
   </div>

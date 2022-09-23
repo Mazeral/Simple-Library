@@ -183,9 +183,7 @@ export class AuthorService {
         },
       });
       books.push(book.id);
-      console.log(books);
     }
-    console.log(books);
     return books;
   }
 }
