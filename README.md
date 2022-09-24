@@ -2,7 +2,7 @@
 
 ## This project was made by : Mohammad Omar Siddiq
 
-### techs used : [NestJS](https://nestjs.com/) , [CockroachDB](https://www.cockroachlabs.com/) , [TypeORM](https://typeorm.io/#/) and [VueJS](https://vuejs.org/)
+### techs used : [NestJS](https://nestjs.com/) , [CockroachDB](https://www.cockroachlabs.com/) , [PismaORM](https://www.prisma.io/) and [VueJS](https://vuejs.org/)
 
 ### The main purpose of this project is to train on fullstack skills.
 
