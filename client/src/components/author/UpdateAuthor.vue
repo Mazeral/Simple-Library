@@ -38,7 +38,10 @@ const lastNameUpdate = () => {
   lastNameForm.value = !lastNameForm.value;
 };
 // A function for the array of book names:
-const addBook = () => books.value.push(bookname.value);
+const addBook = () => {
+  books.value.push(bookname.value);
+  bookname.value = '';
+};
 // objects that contain the updating informations
 // The object containing the data for adding books
 
@@ -112,7 +115,7 @@ async function updateLastNameFetch(
           <input
             type="checkbox"
             class="form-check-input"
-            id="book"
+            id="books"
             @click="bookUpdate"
             v-model="booksForm"
           />
@@ -126,7 +129,7 @@ async function updateLastNameFetch(
             @click="firstNameUpdate"
             v-model="firstNameForm"
           />
-          <label for="author" class="form-check-label"
+          <label for="firstName" class="form-check-label"
             >Change the first name of the author</label
           >
         </div>
@@ -138,7 +141,7 @@ async function updateLastNameFetch(
             @click="lastNameUpdate"
             v-model="lastNameForm"
           />
-          <label for="author" class="form-check-label"
+          <label for="lastName" class="form-check-label"
             >Change the last name of the author</label
           >
         </div>
