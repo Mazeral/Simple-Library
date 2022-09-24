@@ -1,4 +1,4 @@
 export class UpdateBookDesc {
-  title: string;
-  newDesc: string;
+  Title: string;
+  NewDesc: string;
 }

@@ -16,8 +16,8 @@ const bookname = ref('');
 const booklist = ref([]);
 const newBook = reactive({ title: title, description: description });
 const newAuthor = reactive({
-  firstName: FirstName,
-  lastName: LastName,
+  FirstName: FirstName,
+  LastName: LastName,
   Books: booklist,
 });
 //functions to make only one check box work at a time.
@@ -34,21 +34,21 @@ const bookForm = () => {
   isBook.value = !isBook.value;
 };
 //A function for the book list array
-const addBook = () => newAuthor.Books.push(bookname.value);
+const addBook = () => {
+  newAuthor.Books.push(bookname.value);
+  bookname.value = '';
+};
 //post request for authors script:
-async function postAuthor(
-  url = 'http://localhost:3000/api/author/new',
-  data = newAuthor,
-) {
+async function postAuthor(url = 'http://localhost:3000/api/author/new') {
   // POSTING WITH AXIOS LETS GOOOOO
   const response = axios
     .post(url, newAuthor)
     .then((res) => {
       console.log(res);
+      FirstName.value = '';
+      LastName.value = '';
     })
     .catch((err) => console.log(err));
-  data.firstName = '';
-  data.lastName = '';
 
   console.log('an author post request has been sent');
   return response;
@@ -107,7 +107,7 @@ async function postBook(
           type="text"
           class="form-control"
           id="firstname"
-          v-model="newAuthor.FirstName"
+          v-model="FirstName"
           name="firstName"
         />
         <label for="lastname" class="form-label">Last name</label>
@@ -115,13 +115,13 @@ async function postBook(
           type="text"
           class="form-control"
           id="lastname"
-          v-model="newAuthor.LastName"
+          v-model="LastName"
           name="lastName"
         />
         <form @submit.prevent="addBook()">
           <!-- form for the book list insertion via the var booklist -->
           <label for="booklist" class="form-label"
-            >Add a book to the author list of books</label
+            >Add an existing book to the author list of books</label
           >
           <input
             type="text"

@@ -12,6 +12,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDesc } from './dto/update-book-desc.dto';
 import { UpdateBookTitle } from './dto/update-book-title.dto';
 import { Book } from '.prisma/client';
+import { title } from 'process';
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
@@ -35,14 +36,16 @@ export class BookController {
     return this.bookService.updateTitle(title, newTitle);
   }
   @Patch('desc')
-  updateDesc(@Body() updateBookDesc: UpdateBookDesc) {
-    const title = updateBookDesc.title;
-    const newDesc = updateBookDesc.newDesc;
-    return this.bookService.updateDesc(title, newDesc);
+  async updateDesc(@Body() updateBookDesc: UpdateBookDesc) {
+    await this.bookService.updateDesc(
+      updateBookDesc.Title,
+      updateBookDesc.NewDesc,
+    );
   }
 
   @Delete('delete')
-  remove(@Body('title') Title: string) {
-    return this.bookService.remove(Title);
+  async remove(@Body() TitleObj: { title: string }) {
+    const theTitle: string = TitleObj.title;
+    await this.bookService.remove(theTitle);
   }
 }

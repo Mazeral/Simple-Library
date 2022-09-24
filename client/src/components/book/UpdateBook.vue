@@ -30,33 +30,32 @@ const descUpdate = () => {
   descForm.value = !descForm.value;
 };
 // Objects for the forms:
-const titleFormData = reactive({
-  Title: title.value,
-  NewTitle: newTitle.value,
-});
-const descFormData = reactive({
-  Title: title.value,
-  NewDesc: newDesc.value,
-});
+
 // Patch functions with axios
-async function titlePatch(
-  url = 'http://localhost:3000/api/book/title',
-  data = titleFormData,
-) {
-  const response = await axios.patch(url, data);
-  title.value = '';
-  newTitle.value = '';
-  desc.value = '';
-  return response;
+async function titlePatch(url = 'http://localhost:3000/api/book/changetitle') {
+  const titleFormData = reactive({
+    title: title.value,
+    newTitle: newTitle.value,
+  });
+  await axios.patch(url, titleFormData).then(() => {
+    title.value = '';
+    newTitle.value = '';
+    desc.value = '';
+  });
+
+  return { updated: true };
 }
-async function descPatch(
-  url = 'http://localhost:3000/api/book/title',
-  data = descFormData,
-) {
-  const response = await axios.patch(url, data);
-  title.value = '';
-  newDesc.value = '';
-  desc.value = '';
+async function descPatch(url = 'http://localhost:3000/api/book/desc') {
+  const descFormData = reactive({
+    Title: title.value,
+    NewDesc: newDesc.value,
+  });
+  const response = await axios.patch(url, descFormData).then(() => {
+    title.value = '';
+    newDesc.value = '';
+    desc.value = '';
+  });
+
   return response;
 }
 </script>

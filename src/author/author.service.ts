@@ -20,21 +20,32 @@ export class AuthorService {
       });
       if (found) throw Error('This author already exists');
       else {
-        let booklist: any = [];
+        let booklist: number[] = [];
         if (
           createAuthorDto.Books != null &&
           createAuthorDto.Books != undefined
         ) {
           booklist = await this.createArray(createAuthorDto.Books);
         }
-        return await this.prisma.author.create({
+        const author = await this.prisma.author.create({
           data: {
             FirstName: createAuthorDto.FirstName,
             LastName: createAuthorDto.LastName,
-            books: {
-              create: booklist,
-            },
           },
+        });
+        booklist.forEach(async (bookId) => {
+          return await this.prisma.author.update({
+            where: {
+              id: author.id,
+            },
+            data: {
+              books: {
+                connect: {
+                  id: bookId,
+                },
+              },
+            },
+          });
         });
       }
     } catch (error) {
@@ -127,6 +138,8 @@ export class AuthorService {
         },
       });
       const ID = author.id;
+      if (newFirstName === '')
+        throw Error("The new first doesn't have a value");
       return this.prisma.author.update({
         where: { id: ID },
         data: { FirstName: newFirstName },
@@ -147,6 +160,8 @@ export class AuthorService {
       });
       const ID = author.id;
       //Return keyboard is VERY IMPORTANT for the update api to work
+      if (newLastName === '')
+        throw Error('The new last name is an empty string');
       return this.prisma.author.update({
         where: { id: ID },
         data: { LastName: newLastName },
@@ -158,7 +173,13 @@ export class AuthorService {
 
   async remove({ firstName, lastName }) {
     try {
-      const author = await this.findOne({ firstName, lastName });
+      const author: { id: number } = await this.prisma.author.findFirstOrThrow({
+        where: {
+          FirstName: firstName,
+          LastName: lastName,
+        },
+        select: { id: true },
+      });
       await this.prisma.author.delete({
         where: {
           id: author.id,

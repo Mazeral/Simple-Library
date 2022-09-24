@@ -7,7 +7,6 @@ export class BookService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createBookDto: CreateBookDto) {
-    console.log(createBookDto);
     try {
       const found: Book = await this.prisma.book.findFirst({
         where: {
@@ -17,14 +16,17 @@ export class BookService {
       });
       if (found) throw Error('This book already exists');
       else {
-        const title: string = createBookDto.title;
-        const description: string = createBookDto.description;
-        return await this.prisma.book.create({
-          data: {
-            Title: title,
-            Description: description,
-          },
-        });
+        if (createBookDto.title !== '') {
+          const title: string = createBookDto.title;
+          const description: string = createBookDto.description;
+          return await this.prisma.book.create({
+            data: {
+              Title: title,
+              Description: description,
+            },
+          });
+        }
+        throw Error('No title!');
       }
     } catch (Error) {
       console.log(Error.message);
@@ -76,20 +78,19 @@ export class BookService {
     }
   }
 
-  async updateDesc(Title: string, newDesc: string) {
+  async updateDesc(title: string, newDesc: string) {
+    const updatedDesc: string = newDesc;
     try {
-      const book: Book = await this.prisma.book.findFirst({
-        where: { Title: Title },
+      const book: Book = await this.prisma.book.findFirstOrThrow({
+        where: { Title: title },
       });
-      if (book) {
-        const ID = book.id;
-        return this.prisma.book.update({
-          where: { id: ID },
-          data: {
-            Description: newDesc,
-          },
-        });
-      } else throw Error(`This book doesn't exist!`);
+      const ID: number = book.id;
+      await this.prisma.book.update({
+        where: { id: ID },
+        data: {
+          Description: updatedDesc,
+        },
+      });
     } catch (error) {
       return error.message;
     }
@@ -97,6 +98,8 @@ export class BookService {
 
   async remove(title: string) {
     try {
+      if (title === '' || title === undefined)
+        throw Error('The title is empty!');
       const bookID: {
         id: number;
       } = await this.prisma.book.findFirst({
@@ -113,8 +116,9 @@ export class BookService {
         },
       });
       return { deleted: true };
-    } catch (err) {
-      return err.message;
+    } catch (Error) {
+      console.log(Error);
+      return Error;
     }
   }
 }

@@ -38,63 +38,68 @@ const lastNameUpdate = () => {
   lastNameForm.value = !lastNameForm.value;
 };
 // A function for the array of book names:
-const addBook = () => objectForBooks.books.push(bookname.value);
+const addBook = () => books.value.push(bookname.value);
 // objects that contain the updating informations
 // The object containing the data for adding books
-const objectForBooks = reactive({
-  author: { FirstName: firstName, LastName: lastName },
-  books: books.value,
-});
+
 // The variable that have the object.
 // The object containing the data for changing the first name:
-const objectForFirstName = reactive({
-  author: { FirstName: firstName.value, LastName: lastName.value },
-  NewFirstName: newFirstName.value,
-});
 
 // The object containing the data for chaning the last name:
-const objectForLastname = reactive({
-  author: { FirstName: firstName.value, LastName: lastName.value },
-  LastName: newLastName.value,
-});
+
 // fetch requests for the buttons!
 
 // Fetch for adding books
 async function updateBooksFetch(
   url = 'http://localhost:3000/api/author/books',
-  Data = objectForBooks,
 ) {
-  const response = await axios.patch(url, Data);
-  firstName.value = '';
-  lastName.value = '';
-  books.value = [];
-  console.log('an author post request has been sent');
+  const objectForBooks = reactive({
+    author: { FirstName: firstName, LastName: lastName },
+    books: books.value,
+  });
+  const response = await axios.patch(url, objectForBooks).then(() => {
+    firstName.value = '';
+    lastName.value = '';
+    books.value = [];
+    console.log('an author post request has been sent');
+  });
+
   return response;
 }
 // Fetch for updating the first name
 async function updateFirstNameFetch(
   url = 'http://localhost:3000/api/author/firstname',
-  Data = objectForFirstName,
 ) {
-  const response = await axios.patch(url, Data);
+  const objectForFirstName = reactive({
+    author: { FirstName: firstName.value, LastName: lastName.value },
+    NewFirstName: newFirstName.value,
+  });
+  const response = await axios.patch(url, objectForFirstName).then(() => {
+    firstName.value = '';
+    lastName.value = '';
+    newFirstName.value = '';
+  });
   // YOLO
-  firstName.value = '';
-  lastName.value = '';
-  books.value = [];
+
   console.log('an author post request has been sent');
   return response;
 }
 // Fetch for updating the last name
 async function updateLastNameFetch(
   url = 'http://localhost:3000/api/author/lastname',
-  Data = objectForLastname,
 ) {
-  const response = await axios.patch(url, Data);
+  const objectForLastname = reactive({
+    author: { FirstName: firstName.value, LastName: lastName.value },
+    NewLastName: newLastName.value,
+  });
+  const response = await axios.patch(url, objectForLastname).then(() => {
+    firstName.value = '';
+    lastName.value = '';
+    newLastName.value = '';
+    console.log('an author post request has been sent');
+  });
   // YOLO
-  firstName.value = '';
-  lastName.value = '';
-  books.value = [];
-  console.log('an author post request has been sent');
+
   return response;
 }
 </script>

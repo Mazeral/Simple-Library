@@ -1,20 +1,27 @@
 <script setup>
 import { ref, reactive } from 'vue';
-import * as axios from 'axios';
+import axios from 'axios';
 const firstName = ref('');
 const lastName = ref('');
-const data = reactive({
-  FirstName: firstName,
-  LastName: lastName,
-});
-async function removeAuthor(
-  url = 'http://localhost/api/author/remove',
-  Data = data,
-) {
-  const res = axios.delete(url, Data);
 
-  firstName.value = '';
-  lastName.value = '';
+async function removeAuthor() {
+  const Data = reactive({
+    FirstName: firstName.value,
+    LastName: lastName.value,
+  });
+
+  const res = await axios
+    .delete('http://localhost:3000/api/author/deleteAuthor', {
+      data: {
+        FirstName: Data.FirstName,
+        LastName: Data.LastName,
+      },
+    })
+    .then(() => {
+      firstName.value = '';
+      lastName.value = '';
+    });
+
   return res;
 }
 </script>
@@ -31,11 +38,13 @@ async function removeAuthor(
           id="FirstName"
           class="form-control"
           required
+          v-model="firstName"
         />
         <label for="LastName" class="form-label"
           >Enter the author last name</label
         >
         <input
+          v-model="lastName"
           type="text"
           name="LastName"
           id="LastName"
@@ -43,7 +52,9 @@ async function removeAuthor(
           required
         />
       </div>
-      <button type="button" class="btn btn-danger">Remove the author</button>
+      <button @click="removeAuthor" type="button" class="btn btn-danger">
+        Remove the author
+      </button>
     </form>
   </div>
 </template>
