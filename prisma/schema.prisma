@@ -3,20 +3,20 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
 model Author {
-  id  Int @id @default(autoincrement())
-  FirstName String 
-  LastName String
-  books Book[]
+  id        Int    @id @default(sequence())
+  FirstName String
+  LastName  String
+  books     Book[]
 }
 
-model Book{
-  id Int @id @default(autoincrement())
-  Title String 
+model Book {
+  id          Int      @id @default(sequence())
+  Title       String
   Description String
-  authors Author[]
+  authors     Author[]
 }
