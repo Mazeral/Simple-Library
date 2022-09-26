@@ -7,7 +7,7 @@ import { AuthorModule } from './author/author.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '../client/dist'),
+      rootPath: join(__dirname, '..', ' ../opt/render/project/src/client/dist'),
     }),
     BookModule,
     AuthorModule,
