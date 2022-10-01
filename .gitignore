@@ -37,3 +37,4 @@ lerna-debug.log*
 ormconfig.json
 ormconfig.ts
 package-lock.json
+src/client/package-lock.json
