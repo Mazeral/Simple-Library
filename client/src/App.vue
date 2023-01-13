@@ -1,19 +1,11 @@
-<script setup>
-import { RouterView } from 'vue-router';
-import NavBar from './components/NavBar.vue';
-</script>
-
 <template>
-  <NavBar />
-  <div class="container">
-    <RouterView />
-  </div>
-
-  <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
-    <div class="container text-center">
-      <small>This website was made by : Mohammad Omar Siddiq</small>
-    </div>
-  </footer>
+  <v-app>
+    <v-main>
+      <HelloWorld />
+    </v-main>
+  </v-app>
 </template>
 
-<style></style>
+<script setup lang="ts">
+  import HelloWorld from '@/components/HelloWorld.vue'
+</script>
