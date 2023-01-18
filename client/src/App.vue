@@ -1,11 +1,18 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld />
+      <AppBar />
     </v-main>
+    <v-navigation-drawer>
+          <v-list>
+            <v-list-item>lorem</v-list-item>
+            <v-list-item>lorem</v-list-item>
+            <v-list-item>lorem</v-list-item>
+          </v-list>
+        </v-navigation-drawer>
   </v-app>
 </template>
 
 <script setup lang="ts">
-  import HelloWorld from '@/components/HelloWorld.vue'
+import AppBar from '@/components/AppBar.vue'
 </script>
