@@ -3,16 +3,13 @@
     <v-main>
       <AppBar />
     </v-main>
-    <v-navigation-drawer>
-          <v-list>
-            <v-list-item>lorem</v-list-item>
-            <v-list-item>lorem</v-list-item>
-            <v-list-item>lorem</v-list-item>
-          </v-list>
+    <v-navigation-drawer permanent>
+      <MainList/>
         </v-navigation-drawer>
   </v-app>
 </template>
 
 <script setup lang="ts">
 import AppBar from '@/components/AppBar.vue'
+import MainList from './components/MainList.vue';
 </script>
