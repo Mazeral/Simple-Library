@@ -1,23 +1,34 @@
 // Composables
-import AuthorCardVue from '@/components/Read/AuthorCard.vue'
-import BookCardVue from '@/components/Read/BookCard.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import NewAuthorVue from '@/components/Create/NewAuthor.vue';
+import AuthorCardVue from '@/components/Read/AuthorCard.vue';
+import BookCardVue from '@/components/Read/BookCard.vue';
+import NewBookVue from '@/components/Create/NewBook.vue'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
-{
-  path:'/',
-component:()=> import('@/components/AppBar.vue')
-},
-{
-  path:'/authors',
-  name:'Authors',
-  component: AuthorCardVue,
-},
-{
-path:'/books',
-name:'Books',
-component: BookCardVue
-}
+  {
+    path: '/',
+  },
+  {
+    path: '/authors',
+    name: 'Authors',
+    component: AuthorCardVue,
+  },
+  {
+    path: '/books',
+    name: 'Books',
+    component: BookCardVue,
+  },
+  {
+    path: '/authors/new',
+    name: 'New Author',
+    component: NewAuthorVue,
+  },
+  {
+    path:'/books/new',
+    name:'New Book',
+    component:  NewBookVue
+  }
   // {
   //   path: '/',
   //   component: () => import('@/layouts/default/Default.vue'),
@@ -32,11 +43,11 @@ component: BookCardVue
   //     },
   //   ],
   // },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-})
+});
 
-export default router
+export default router;
