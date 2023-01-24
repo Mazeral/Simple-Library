@@ -8,17 +8,25 @@ datasource db {
 }
 
 model Author {
-  id        Int    @id @default(autoincrement())
-  FirstName String
-  LastName  String
-  books     Book[]
+  id           Int            @id @default(autoincrement())
+  firstname    String
+  lastname     String
+  AuthorsBooks AuthorsBooks[]
 }
 
 model Book {
-  id          Int      @id @default(autoincrement())
-  Title       String
-  Description String
-  authors     Author[]
+  id           Int            @id @default(autoincrement())
+  title        String
+  details      String
+  AuthorsBooks AuthorsBooks[]
 }
 
 //Add a explicit many to many relationship.
+
+model AuthorsBooks {
+  author    Author @relation(fields: [authorId], references: [id])
+  authorId  Int
+  book      Book   @relation(fields: [bookId], references: [id])
+  bookId    Int
+  @@id([authorId, bookId])
+}
