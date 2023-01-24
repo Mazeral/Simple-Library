@@ -1,10 +1,22 @@
 // Composables
+import AuthorCardVue from '@/components/Read/AuthorCard.vue'
+import BookCardVue from '@/components/Read/BookCard.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
 {
   path:'/',
 component:()=> import('@/components/AppBar.vue')
+},
+{
+  path:'/authors',
+  name:'Authors',
+  component: AuthorCardVue,
+},
+{
+path:'/books',
+name:'Books',
+component: BookCardVue
 }
   // {
   //   path: '/',
