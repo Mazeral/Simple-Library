@@ -21,8 +21,6 @@ model Book {
   AuthorsBooks AuthorsBooks[]
 }
 
-//Add a explicit many to many relationship.
-
 model AuthorsBooks {
   author    Author @relation(fields: [authorId], references: [id])
   authorId  Int

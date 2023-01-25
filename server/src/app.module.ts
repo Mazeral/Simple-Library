@@ -3,6 +3,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'; // New for VueJS clien
 import { join } from 'path'; // New for VueJS client
 import { BookModule } from './book/book.module';
 import { AuthorModule } from './author/author.module';
+import { AuthorsToBooksModule } from './authors-to-books/authors-to-books.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -10,6 +11,7 @@ import { AuthorModule } from './author/author.module';
     }),
     BookModule,
     AuthorModule,
+    AuthorsToBooksModule,
   ],
   providers: [],
 })
