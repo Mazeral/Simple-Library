@@ -2,8 +2,10 @@
 import NewAuthorVue from '@/components/Create/NewAuthor.vue';
 import AuthorCardVue from '@/components/Read/AuthorCard.vue';
 import BookCardVue from '@/components/Read/BookCard.vue';
-import NewBookVue from '@/components/Create/NewBook.vue'
+import NewBookVue from '@/components/Create/NewBook.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import DeleteBookVue from '@/components/Delete/DeleteBook.vue';
+import DeleteAuthorVue from '@/components/Delete/DeleteAuthor.vue';
 
 const routes = [
   {
@@ -25,9 +27,19 @@ const routes = [
     component: NewAuthorVue,
   },
   {
-    path:'/books/new',
-    name:'New Book',
-    component:  NewBookVue
+    path: '/books/new',
+    name: 'New Book',
+    component: NewBookVue,
+  },
+  {
+    path: '/books/delete',
+    name: 'Delete Book',
+    component: DeleteBookVue
+  }
+  , {
+    path: '/authors/delete',
+    name: "Delete Author",
+    component: DeleteAuthorVue
   }
   // {
   //   path: '/',

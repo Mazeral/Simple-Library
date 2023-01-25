@@ -9,4 +9,11 @@ The text in the list of the books. -->
       <v-list> </v-list>
     </v-card-text>
   </v-card>
+
+  <!-- The opposite here: book names with authors -->
+  <v-card title="" subtitle="Authors:">
+    <v-card-text>
+      <v-list> </v-list>
+    </v-card-text>
+  </v-card>
 </template>
