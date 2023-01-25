@@ -1,4 +1,4 @@
-import { IsAlpha } from "class-validator";
+import { IsAlpha } from 'class-validator';
 export class NewFirstName {
   @IsAlpha()
   FirstName: string;

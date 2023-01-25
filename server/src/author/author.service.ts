@@ -1,56 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { BookService } from 'src/book/book.service';
-import { Author, Book } from '.prisma/client';
+import { Author } from '.prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { AuthorsToBooksService } from 'src/authors-to-books/authors-to-books.service';
+import { addBooksToAuthors } from 'src/authors-to-books/dto/add-books-to-authors.dto';
 @Injectable()
 export class AuthorService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly bookService: BookService,
+    private readonly authorbooks: AuthorsToBooksService,
   ) {}
 
   async create(createAuthorDto: CreateAuthorDto) {
-    try {
-      const found: Author = await this.prisma.author.findFirst({
-        where: {
-          FirstName: createAuthorDto.FirstName,
-          LastName: createAuthorDto.LastName,
-        },
-      });
-      if (found) throw Error('This author already exists');
-      else {
-        let booklist: number[] = [];
-        if (
-          createAuthorDto.Books != null &&
-          createAuthorDto.Books != undefined
-        ) {
-          booklist = await this.createArray(createAuthorDto.Books);
-        }
-        const author = await this.prisma.author.create({
-          data: {
-            FirstName: createAuthorDto.FirstName,
-            LastName: createAuthorDto.LastName,
-          },
-        });
-        booklist.forEach(async (bookId) => {
-          return await this.prisma.author.update({
-            where: {
-              id: author.id,
-            },
-            data: {
-              books: {
-                connect: {
-                  id: bookId,
-                },
-              },
-            },
-          });
-        });
-      }
-    } catch (error) {
-      return error.message;
-    }
+    return await this.prisma.author.create({
+      data: {
+        firstname: createAuthorDto.FirstName,
+        lastname: createAuthorDto.LastName,
+      },
+    });
   }
 
   async findAll() {
@@ -58,9 +25,9 @@ export class AuthorService {
       return await this.prisma.author.findMany({
         select: {
           id: true,
-          FirstName: true,
-          LastName: true,
-          books: true,
+          firstname: true,
+          lastname: true,
+          AuthorsBooks: true,
         },
       });
     } catch (error) {
@@ -71,7 +38,7 @@ export class AuthorService {
   async findOne({ firstName, lastName }): Promise<Author | undefined> {
     try {
       return await this.prisma.author.findFirstOrThrow({
-        where: { FirstName: firstName, LastName: lastName },
+        where: { firstname: firstName, lastname: lastName },
       });
     } catch (error) {
       return error.message;
@@ -90,51 +57,13 @@ export class AuthorService {
 
   //Create multiple update services to make mutliple update endpoints, DIVIDE AND CONQUOER
 
-  async updateBooks({ firstName, lastName }, books: string[]) {
-    //Search for an author that matches these options, if he does exist update him with the books
-    //Array, if not return error.
-    //USE FOR EACH!!!!!!!!!!!!!!!!!!!!!!!
-
-    //Checks if there is an author
-    try {
-      const author: { id: number } = await this.prisma.author.findFirstOrThrow({
-        where: {
-          FirstName: firstName,
-          LastName: lastName,
-        },
-        select: {
-          id: true,
-        },
-      });
-      //creates an array of id for the books to connect, and then uses async await arrow function
-      //to complete job
-      const conninfo: number[] = await this.createArray(books);
-      conninfo.forEach(async (bookId) => {
-        return await this.prisma.author.update({
-          where: {
-            id: author.id,
-          },
-          data: {
-            books: {
-              connect: {
-                id: bookId,
-              },
-            },
-          },
-        });
-      });
-    } catch (error) {
-      console.log(error.message);
-      return error.message;
-    }
-  }
   async updateFirstName({ firstName, lastName }, newFirstName: string) {
     //Changed the first name
     try {
       const author: Author = await this.prisma.author.findFirstOrThrow({
         where: {
-          FirstName: firstName,
-          LastName: lastName,
+          firstname: firstName,
+          lastname: lastName,
         },
       });
       const ID = author.id;
@@ -142,7 +71,7 @@ export class AuthorService {
         throw Error("The new first doesn't have a value");
       return this.prisma.author.update({
         where: { id: ID },
-        data: { FirstName: newFirstName },
+        data: { firstname: newFirstName },
       });
     } catch (error) {
       return error.message;
@@ -154,8 +83,8 @@ export class AuthorService {
     try {
       const author: Author = await this.prisma.author.findFirstOrThrow({
         where: {
-          FirstName: firstName,
-          LastName: lastName,
+          firstname: firstName,
+          lastname: lastName,
         },
       });
       const ID = author.id;
@@ -164,10 +93,17 @@ export class AuthorService {
         throw Error('The new last name is an empty string');
       return this.prisma.author.update({
         where: { id: ID },
-        data: { LastName: newLastName },
+        data: { lastname: newLastName },
       });
     } catch (error) {
       return error.message;
+    }
+  }
+
+  //A function to update the list of books for an Author.
+  async updateAuthorBooks(updateAuthorBooks:addBooksToAuthors) {
+    for (const item in updateAuthorBooks.books) {
+
     }
   }
 
@@ -175,8 +111,8 @@ export class AuthorService {
     try {
       const author: { id: number } = await this.prisma.author.findFirstOrThrow({
         where: {
-          FirstName: firstName,
-          LastName: lastName,
+          firstname: firstName,
+          lastname: lastName,
         },
         select: { id: true },
       });
@@ -197,7 +133,7 @@ export class AuthorService {
     for (const bookname of booknames) {
       const book = await this.prisma.book.findFirstOrThrow({
         where: {
-          Title: bookname,
+          title: bookname,
         },
         select: {
           id: true,

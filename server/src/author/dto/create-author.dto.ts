@@ -1,4 +1,4 @@
-import { IsAlpha } from "class-validator";
+import { IsAlpha } from 'class-validator';
 
 export class CreateAuthorDto {
   @IsAlpha()

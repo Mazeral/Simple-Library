@@ -5,7 +5,7 @@ import { UpdateAuthorsToBookDto } from './dto/update-authors-to-book.dto';
 
 @Controller('authors-to-books')
 export class AuthorsToBooksController {
-  constructor(private readonly authorsToBooksService: AuthorsToBooksService) { }
+  constructor(private readonly authorsToBooksService: AuthorsToBooksService) {}
 
   @Post()
   async create(@Body() createAuthorsToBookDto: CreateAuthorsToBookDto[]) {
@@ -25,7 +25,10 @@ export class AuthorsToBooksController {
 
   //it's a post request since the id is a compount key, not a candidate key.
   @Post('update')
-  async update(id: CreateAuthorsToBookDto, @Body() updateAuthorsToBookDto: UpdateAuthorsToBookDto) {
+  async update(
+    id: CreateAuthorsToBookDto,
+    @Body() updateAuthorsToBookDto: UpdateAuthorsToBookDto,
+  ) {
     return await this.authorsToBooksService.update(id, updateAuthorsToBookDto);
   }
 

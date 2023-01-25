@@ -12,7 +12,6 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDesc } from './dto/update-book-desc.dto';
 import { UpdateBookTitle } from './dto/update-book-title.dto';
 import { Book } from '.prisma/client';
-import { title } from 'process';
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}

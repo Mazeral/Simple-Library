@@ -1,4 +1,4 @@
-import { IsAlpha, IsAlphanumeric, IsNumber } from "class-validator";
+import { IsAlpha, IsAlphanumeric, IsNumber } from 'class-validator';
 
 export class BookDTO {
   @IsNumber()

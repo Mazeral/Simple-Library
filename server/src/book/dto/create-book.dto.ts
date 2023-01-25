@@ -1,4 +1,4 @@
-import { IsAlphanumeric } from "class-validator";
+import { IsAlphanumeric } from 'class-validator';
 
 export class CreateBookDto {
   @IsAlphanumeric()

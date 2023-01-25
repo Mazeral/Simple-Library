@@ -1,8 +1,8 @@
-import { IsInt } from "class-validator";
+import { IsInt } from 'class-validator';
 
 export class CreateAuthorsToBookDto {
-    @IsInt()
-    bookId: number;
-    @IsInt()
-    authorId: number;
+  @IsInt()
+  bookId: number;
+  @IsInt()
+  authorId: number;
 }

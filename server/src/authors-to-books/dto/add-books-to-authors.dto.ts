@@ -1,10 +1,10 @@
 import { IsAlpha, IsAlphanumeric } from 'class-validator';
 
-export class AuthorBooks {
+export class addBooksToAuthors {
   @IsAlpha()
-  FirstName: string;
+  firstname: string;
   @IsAlpha()
-  LastName: string;
+  lastname: string;
   @IsAlphanumeric('en-US', {
     each: true,
   })
