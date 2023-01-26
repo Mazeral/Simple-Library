@@ -3,28 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
 model Author {
-  id           Int            @id @default(autoincrement())
+  id           Int            @id @default(sequence())
   firstname    String
   lastname     String
   AuthorsBooks AuthorsBooks[]
 }
 
 model Book {
-  id           Int            @id @default(autoincrement())
+  id           Int            @id @default(sequence())
   title        String
   details      String
   AuthorsBooks AuthorsBooks[]
 }
 
 model AuthorsBooks {
-  author    Author @relation(fields: [authorId], references: [id])
-  authorId  Int
-  book      Book   @relation(fields: [bookId], references: [id])
-  bookId    Int
+  author   Author @relation(fields: [authorId], references: [id])
+  authorId Int
+  book     Book   @relation(fields: [bookId], references: [id])
+  bookId   Int
+
   @@id([authorId, bookId])
 }
