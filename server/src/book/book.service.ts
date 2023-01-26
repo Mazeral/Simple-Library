@@ -34,15 +34,19 @@ export class BookService {
     }
   }
 
-  async findAll(): Promise<Book[]> {
-    return this.prisma.book.findMany({
-      select: {
-        id: true,
-        title: true,
-        details: true,
-        AuthorsBooks: true,
-      },
+  async findAll() {
+    const booksandauthors = await this.prisma.book.findMany({
+      include: { AuthorsBooks: { include: { author: true } } },
     });
+    const betterver = booksandauthors.map((book) => {
+      return {
+        id: book.id,
+        title: book.title,
+        detail: book.details,
+        Authors: book.AuthorsBooks.map((item) => item.author),
+      };
+    });
+    return betterver;
   }
 
   async findOne(Title: string): Promise<Book> {

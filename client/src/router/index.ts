@@ -54,11 +54,7 @@ const routes = [
     name: 'Update Book',
     component: UpdateBook,
   },
-  {
-    path: '/all',
-    name: 'All Authors And Books',
-    component: AllCardVue,
-  },
+
   // {
   //   path: '/',
   //   component: () => import('@/layouts/default/Default.vue'),

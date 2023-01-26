@@ -12,7 +12,7 @@ export class BookController {
     return this.bookService.create(createBookDto);
   }
   @Get('/')
-  findAll(): Promise<Book[]> {
+  findAll() {
     return this.bookService.findAll();
   }
   @Get(':id')

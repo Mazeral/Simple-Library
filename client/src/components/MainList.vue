@@ -11,11 +11,6 @@ const ListItems = [
     path: '/books',
   },
   {
-    id: 3,
-    name: 'Show Authors and books',
-    path: '/all',
-  },
-  {
     id: 4,
     name: 'Add Authors',
     path: '/authors/new',

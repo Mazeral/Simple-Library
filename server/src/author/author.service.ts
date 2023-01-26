@@ -4,6 +4,7 @@ import { Author } from '.prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { AuthorsToBooksService } from 'src/authors-to-books/authors-to-books.service';
 import { addBooksToAuthors } from 'src/authors-to-books/dto/add-books-to-authors.dto';
+import { BookController } from 'src/book/book.controller';
 @Injectable()
 export class AuthorService {
   constructor(
@@ -22,14 +23,24 @@ export class AuthorService {
 
   async findAll() {
     try {
-      return await this.prisma.author.findMany({
-        select: {
-          id: true,
-          firstname: true,
-          lastname: true,
-          AuthorsBooks: true,
-        },
+      //make a foreach function that takes the id of the book and the author, then searches for them and
+      //print them as a single object.
+      //The output is messy, we need to make it better.
+      /**const result = posts.map((post) => {
+        return { ...post, tags: post.tags.map((tag) => tag.tag) }
+        }) */
+      const anb = await this.prisma.author.findMany({
+        include: { AuthorsBooks: { include: { book: true } } },
       });
+      const result = anb.map((author) => {
+        return {
+          id: author.id,
+          firstname: author.firstname,
+          lastname: author.lastname,
+          books: author.AuthorsBooks.map((item) => item.book),
+        };
+      });
+      return result;
     } catch (error) {
       return error.message;
     }
