@@ -20,8 +20,8 @@ console.log(authors.value);
       <v-card-title v-for="item in authors" :key="item.id"
         >Author: {{ item.firstname }} {{ item.lastname }}</v-card-title
       >
-      <v-card-text v-for="item in item.books" :key="item.id"
-        >Books:{{ item.title }}</v-card-text
+      <v-card-text v-for="itemelse in item.books" :key="itemelse.id"
+        >Books:{{ itemelse.title }}</v-card-text
       >
     </v-card>
   </v-list>

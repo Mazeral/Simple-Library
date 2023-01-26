@@ -8,11 +8,11 @@ import DeleteBookVue from '@/components/Delete/DeleteBook.vue';
 import DeleteAuthorVue from '@/components/Delete/DeleteAuthor.vue';
 import UpdateAuthor from '@/components/Update/UpdateAuthor.vue';
 import UpdateBook from '@/components/Update/UpdateBook.vue';
-import AllCardVue from '@/components/Read/AllCard.vue';
-
-const routes = [
+import * as VueRouter from 'vue-router';
+const routes : VueRouter.RouteRecordRaw[] = [
   {
     path: '/',
+    redirect:'/authors'
   },
   {
     path: '/authors',

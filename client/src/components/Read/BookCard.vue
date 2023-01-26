@@ -13,8 +13,8 @@ console.log(books.value);
   <!-- The list of the Books will be printed with the for loop in the list, and the elements will be binded with the API of the card, the same idea will be used with th Author card -->
   <v-list v-for="item in books" :key="item.id">
     <v-card :title="`Book name: ${item.title}`" :text="item.detail">
-      <v-card-subtitle v-for="item in item.Authors" :key="item.id"
-        >{{ item.firstname }} {{ item.lastname }}</v-card-subtitle
+      <v-card-subtitle v-for="something in item.Authors" :key="item.id"
+        >{{ something.firstname }} {{ something.lastname }}</v-card-subtitle
       >
     </v-card>
   </v-list>
