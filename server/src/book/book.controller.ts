@@ -1,9 +1,8 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
-  Patch,
+  Post,
   Param,
   Delete,
 } from '@nestjs/common';
@@ -28,13 +27,13 @@ export class BookController {
     return this.bookService.findOneID(+id);
   }
 
-  @Patch('changetitle')
+  @Post('changetitle')
   updateTitle(@Body() updateBookTitle: UpdateBookTitle) {
     const title = updateBookTitle.title;
     const newTitle = updateBookTitle.newTitle;
     return this.bookService.updateTitle(title, newTitle);
   }
-  @Patch('desc')
+  @Post('details')
   async updateDesc(@Body() updateBookDesc: UpdateBookDesc) {
     await this.bookService.updateDesc(
       updateBookDesc.Title,
@@ -42,7 +41,7 @@ export class BookController {
     );
   }
 
-  @Delete('delete')
+  @Post('delete')
   async remove(@Body() TitleObj: { title: string }) {
     const theTitle: string = TitleObj.title;
     await this.bookService.remove(theTitle);

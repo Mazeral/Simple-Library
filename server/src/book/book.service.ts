@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { PrismaService } from 'src/prisma.service';
 import { Book } from '@prisma/client';
@@ -10,8 +10,8 @@ export class BookService {
     try {
       const found: Book = await this.prisma.book.findFirst({
         where: {
-          Title: createBookDto.title,
-          Description: createBookDto.description,
+          title: createBookDto.title,
+          details: createBookDto.description,
         },
       });
       if (found) throw Error('This book already exists');
@@ -21,8 +21,8 @@ export class BookService {
           const description: string = createBookDto.description;
           return await this.prisma.book.create({
             data: {
-              Title: title,
-              Description: description,
+              title: title,
+              details: description,
             },
           });
         }
@@ -30,6 +30,7 @@ export class BookService {
       }
     } catch (Error) {
       console.log(Error.message);
+      throw new BadRequestException
     }
   }
 
@@ -37,16 +38,16 @@ export class BookService {
     return this.prisma.book.findMany({
       select: {
         id: true,
-        Title: true,
-        Description: true,
-        authors: true,
+        title: true,
+        details: true,
+        AuthorsBooks:true
       },
     });
   }
 
   async findOne(Title: string): Promise<Book> {
     const found: Book = await this.prisma.book.findFirst({
-      where: { Title: Title },
+      where: { title: Title },
     });
     return found;
   }
@@ -62,14 +63,14 @@ export class BookService {
   async updateTitle(Title: string, newTitle: string) {
     try {
       const book: Book = await this.prisma.book.findFirst({
-        where: { Title: Title },
+        where: { title: Title },
       });
       const ID = book.id;
       if (book) {
         return this.prisma.book.update({
           where: { id: ID },
           data: {
-            Title: newTitle,
+            title: newTitle,
           },
         });
       } else throw Error(`This book doesn't exist!`);
@@ -82,13 +83,13 @@ export class BookService {
     const updatedDesc: string = newDesc;
     try {
       const book: Book = await this.prisma.book.findFirstOrThrow({
-        where: { Title: title },
+        where: { title: title },
       });
       const ID: number = book.id;
       await this.prisma.book.update({
         where: { id: ID },
         data: {
-          Description: updatedDesc,
+          details: updatedDesc,
         },
       });
     } catch (error) {
@@ -104,7 +105,7 @@ export class BookService {
         id: number;
       } = await this.prisma.book.findFirst({
         where: {
-          Title: title,
+          title: title,
         },
         select: {
           id: true,

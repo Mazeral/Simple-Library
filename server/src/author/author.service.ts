@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { Author } from '.prisma/client';
 import { PrismaService } from 'src/prisma.service';
@@ -101,9 +101,32 @@ export class AuthorService {
   }
 
   //A function to update the list of books for an Author.
-  async updateAuthorBooks(updateAuthorBooks:addBooksToAuthors) {
-    for (const item in updateAuthorBooks.books) {
+  async updateAuthorBooks(updateAuthorBooks: addBooksToAuthors) {
+    try {
+      const author: Author | null = await this.prisma.author.findFirst({
+        where: {
+          firstname: updateAuthorBooks.firstname,
+          lastname: updateAuthorBooks.lastname,
+        },
+      });
 
+      for (const item in updateAuthorBooks.books) {
+        const bookId = this.prisma.book.findFirst({
+          where: {
+            title: item,
+          },
+          select: { id: true },
+        });
+        this.prisma.authorsBooks.create({
+          data: {
+            authorId: author.id,
+            bookId: (await bookId).id,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('There something wrong with the data!');
     }
   }
 
