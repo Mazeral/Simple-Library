@@ -8,6 +8,7 @@ import DeleteBookVue from '@/components/Delete/DeleteBook.vue';
 import DeleteAuthorVue from '@/components/Delete/DeleteAuthor.vue';
 import UpdateAuthor from '@/components/Update/UpdateAuthor.vue';
 import UpdateBook from '@/components/Update/UpdateBook.vue';
+import AllCardVue from '@/components/Read/AllCard.vue';
 
 const routes = [
   {
@@ -52,6 +53,11 @@ const routes = [
     path: '/books/update',
     name: 'Update Book',
     component: UpdateBook,
+  },
+  {
+    path: '/all',
+    name: 'All Authors And Books',
+    component: AllCardVue,
   },
   // {
   //   path: '/',

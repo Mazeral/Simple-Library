@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { DeleteAuthor } from './dto/delete-author.dto';
@@ -49,7 +43,10 @@ export class AuthorController {
     const firstName: string = updateLastName.FirstName;
     const lastName: string = updateLastName.LastName;
     const nln: string = updateLastName.NewLastName;
-    return await this.authorService.updateLastName({ firstName, lastName }, nln);
+    return await this.authorService.updateLastName(
+      { firstName, lastName },
+      nln,
+    );
   }
 
   //updates the authors books

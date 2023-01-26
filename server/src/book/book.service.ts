@@ -30,7 +30,7 @@ export class BookService {
       }
     } catch (Error) {
       console.log(Error.message);
-      throw new BadRequestException
+      throw new BadRequestException();
     }
   }
 
@@ -40,7 +40,7 @@ export class BookService {
         id: true,
         title: true,
         details: true,
-        AuthorsBooks:true
+        AuthorsBooks: true,
       },
     });
   }

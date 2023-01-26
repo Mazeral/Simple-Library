@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import endpoints from '@/endpoints';
 import axios from 'axios';
-const firstname = ref();
-const lastname = ref();
+const firstname = ref('');
+const lastname = ref('');
 const submit = async () => {
   await axios
     .post(endpoints.createAuthor, {

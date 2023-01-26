@@ -5,7 +5,7 @@ import axios from 'axios';
 const books = ref();
 axios
   .get(endpoints.getBooks)
-  .then((res) => (books.value = res))
+  .then((res) => (books.value = res.data))
   .catch((error) => console.error(error));
 </script>
 <template>

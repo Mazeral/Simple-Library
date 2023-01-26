@@ -8,7 +8,7 @@ const authorLast = ref('');
 const removeAuth = async () => {
   if (confimation.value && authorFirst.value)
     await axios
-      .post(endpoints.getAuthors, {
+      .post(endpoints.deleteAuthor, {
         FirstName: authorFirst.value,
         LastName: authorLast.value,
       })
@@ -25,7 +25,12 @@ const removeAuth = async () => {
       required
       clearable
     ></v-text-field>
-    <v-text-field label="Last Name" required clearable></v-text-field>
+    <v-text-field
+      v-model="authorLast"
+      label="Last Name"
+      required
+      clearable
+    ></v-text-field>
     <v-checkbox label="ARE YOU SURE?" v-model="confimation"></v-checkbox>
     <v-btn color="error" @click="removeAuth">Commit</v-btn>
   </v-form>

@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Post,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Body, Post, Param } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDesc } from './dto/update-book-desc.dto';
@@ -42,8 +35,8 @@ export class BookController {
   }
 
   @Post('delete')
-  async remove(@Body() TitleObj: { title: string }) {
-    const theTitle: string = TitleObj.title;
+  async remove(@Body() data: { title: string }) {
+    const theTitle: string = data.title;
     await this.bookService.remove(theTitle);
   }
 }

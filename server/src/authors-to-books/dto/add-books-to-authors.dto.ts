@@ -8,5 +8,5 @@ export class addBooksToAuthors {
   @IsAlphanumeric('en-US', {
     each: true,
   })
-  books: string[];
+  books: [];
 }

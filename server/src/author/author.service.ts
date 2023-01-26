@@ -110,20 +110,20 @@ export class AuthorService {
         },
       });
 
-      for (const item in updateAuthorBooks.books) {
-        const bookId = this.prisma.book.findFirst({
+      updateAuthorBooks.books.forEach(async (item) => {
+        const bookId = await this.prisma.book.findFirst({
           where: {
             title: item,
           },
           select: { id: true },
         });
-        this.prisma.authorsBooks.create({
+        await this.prisma.authorsBooks.create({
           data: {
             authorId: author.id,
-            bookId: (await bookId).id,
+            bookId: bookId.id,
           },
         });
-      }
+      });
     } catch (error) {
       console.error(error);
       throw new BadRequestException('There something wrong with the data!');

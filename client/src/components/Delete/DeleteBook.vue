@@ -17,7 +17,12 @@ const deleteBook = async () => {
 
 <template>
   <v-form>
-    <v-text-field label="Book Title" clearable required></v-text-field>
+    <v-text-field
+      label="Book Title"
+      clearable
+      required
+      v-model="title"
+    ></v-text-field>
     <v-checkbox label="ARE YOU SURE?" v-model="confimation"></v-checkbox>
     <v-btn color="error" @click="deleteBook">Commit</v-btn>
   </v-form>

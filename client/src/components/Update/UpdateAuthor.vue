@@ -22,7 +22,7 @@ const addname = () => {
   console.log(booklist);
 };
 const update = async () => {
-  if (!value.value) {
+  if (!value.value && newFirst.value == true) {
     await axios
       .post(endpoints.updateAuthorFirstName, {
         FirstName: author.value.firstname,
@@ -31,8 +31,9 @@ const update = async () => {
       })
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
+    console.log('updated first name');
   }
-  if (value.value) {
+  if (value.value && newLast.value == false) {
     await axios
       .post(endpoints.updateAuthorLastName, {
         FirstName: author.value.firstname,
@@ -41,6 +42,7 @@ const update = async () => {
       })
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
+    console.log('updated last name');
   }
   if (booklist) {
     await axios
@@ -51,6 +53,7 @@ const update = async () => {
       })
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
+    console.log('updated books');
   }
 };
 const remelement = (index: number) => {
