@@ -1,0 +1,1 @@
+{"version":3,"file":"add-books-to-authors.dto.js","sourceRoot":"","sources":["../../../src/authors-to-books/dto/add-books-to-authors.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA0D;AAE1D,MAAa,iBAAiB;CAS7B;AARC;IAAC,IAAA,yBAAO,GAAE;;oDACQ;AAClB;IAAC,IAAA,yBAAO,GAAE;;mDACO;AACjB;IAAC,IAAA,gCAAc,EAAC,OAAO,EAAE;QACvB,IAAI,EAAE,IAAI;KACX,CAAC;;gDACQ;AARZ,8CASC"}
